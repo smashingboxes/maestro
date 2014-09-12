@@ -2,7 +2,7 @@
 # Effective range is from 80 upwards, so this maps 0 to 0 and a 1-10 range to 80-100 respectively.
 # Also allows to set the volume to 11 and 9000 (and everything else above 10, for that matter).
 class VolumeHandler
-  constructor: (initial_step = 5) ->
+  constructor: (initial_step = 3) ->
     @exec = require('child_process').exec
     @set initial_step
 
@@ -12,9 +12,8 @@ class VolumeHandler
   set: (step) ->
     step = @validate_step step
     vol = @step_to_volume step
-    @exec('amixer sset PCM,0 ' + vol + '%', (error, stdout, stderr) -> )
+    @exec('osascript -e "set Volume ' + step + '"', (error, stdout, stderr) -> )
     @current_step = step
-    # console.info "Set current volume to #{vol}% / Step #{@current_step}"
 
   up: () ->
     @set @current_step+1
@@ -40,5 +39,5 @@ class VolumeHandler
     return 80 + (2 * step)
 
 # export things
-module.exports = (initial_volume = 5) ->
+module.exports = (initial_volume = 3) ->
   return new VolumeHandler(initial_volume)

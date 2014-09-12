@@ -31,18 +31,6 @@ All the important bits are controlled by `config.json` in the project's root pat
   "spotify": {
     "username": "Spotify Username",
     "password": "Spotify Password",
-
-    // Playlists need to be pre-configured for use here.
-    // Create playlists using the Spotify app, then right-click
-    // them and copy their URIs. The names in here don't have to
-    // match the actual Playlist's name but are used as arguments,
-    // so you might want to keep them short and simple.
-    // A playlist named "default" is required!
-    "playlists": {
-      "default": "spotify:user:crispymtn:playlist:1xUTFaq10nzODhwkwLMo2l",
-      "metal": "spotify:user:crispymtn:playlist:6IkIC1Rq6bMkhsO0sj9GGs",
-      "hiphop": "spotify:user:crispymtn:playlist:71SBbMfSyMHRAIxl8fKEbI"
-    }
   },
   "auth": {
   	// Slack generates one token per integration, so you can just put them
@@ -66,27 +54,40 @@ text=<trigger_word> <argument>
 
 Currently the following trigger words are available:
 
-* `play [Spotify URI]` - Starts/resumes playback if no URI is provided. If a URI is given, immedtiately switches to the linked track.
+* `play [Spotify URI]` - Starts/resumes playback if no URI is provided. If a URI is given, immediately switches to the linked track.
 * `pause` - Pauses playback at the current time.
 * `stop` - Stops playback and resets to the beginning of the current track.
 * `skip` - Skips (or shuffles) to the next track in the playlist.
 * `shuffle` - Toggles shuffle on or off.
 * `vol [up|down|0..10]` Turns the volume either up/down one notch or directly to a step between 0 (mute) and 10 (full blast). Also goes to eleven.
-* `list [list name]` - When provided with an argument, switches to this playlist. Otherwise, shows all available playlists.
+* `list [command] [options]` - See playlists section below.
 * `status` - Shows the currently playing song, playlist and whether you're shuffling or not.
-* `help` - Shows a list of commands with a short explaantion.
+* `help` - Shows a list of commands with a short explanation.
 
 If you're using Slack integrations, simply create an outgoing webhook to `http://your-crispyfi-url/handle` that listens to the appropriate trigger words. See below for an example screenshot of our setup. To disable certain funtions, just remove the trigger word.
 
 ![Slack integration](http://i.imgur.com/Tye5R2W.png)
 
+## Playlists
+CrispyFi provides a command line-like interface to its internal playlist handling you can use to add, remove and rename lists. This data is persisted between sessions and will be available upon restart. On a fresh startup, CrispyFi attempts to load the last playlists you used or, failing that, will look for a playlist named "default". If neither of those work, it'll just pout a bit and not play anything. Using this interface is straight forward:
+
+* `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.
+* `list remove <name>` - Removes the specified list.
+* `list rename <old name> <new name>` - Renames the specified list.
+* `list <name>` - Selects the specified list and starts playback.
+
+## Plugins
+If CrispyFi doesn't do what you need, you can extend it. The plugin architecture is pretty minimal at this point, but at least there's a standardized interface. If none of the default trigger words matched, each plugin's `handle` method will be called until one is found that returns `true`. If a plugin returns `true`, the plugin chain is halted and the plugin's `status` attribute is checked for content. If it's not empty, its content will be replied to the Slack channel CrispyFi listens to. If it's empty, nothing further will happen (the plugin chain will *not* be traversed further, though).
+
+Plugins live in `/plugins` and need a `name` attribute. A minimal example implementation is provided in `examples/my_first_plugin.coffee`.
+
 ## Getting your groove on(line)
 Since your Pi will probably be behind a firewall/some sort of NAT or have a dynamic IP, you'll have difficulties tying Slack's webhooks to its IP address. We're currently using [ngrok](http://ngrok.com) to get around that, mainly because it's awesome and makes developing web services much easier. Also, using ngrok you avoid the hassle of updating some other service's configuration whenever your IP changes, instead you have to run a small binary all the time. YMMV, so use whatever you're comfortable with (but give ngrok a try).
 
 ## Used Software
-CrispyFi builds upon [ApiServer](https://github.com/kilianc/node-apiserver) by killianc and includes a pre-compiled version of FrontierPsychiatrist's [node-spotify](https://github.com/FrontierPsychiatrist/node-spotify) since our Raspberry Pi stoically refused to compile the extension itself. The according license is redistributed as per the terms of the MIT License and can be found in the file `licenses/node-spotify` in the project's root directory.
+CrispyFi builds upon [ApiServer](https://github.com/kilianc/node-apiserver) by killianc and includes a pre-compiled version of FrontierPsychiatrist's [node-spotify](https://github.com/FrontierPsychiatrist/node-spotify) since our Raspberry Pi stoically refused to compile the extension itself. The according license is redistributed as per the terms of the MIT License and can be found in the file `licenses/node-spotify` in the project's root directory. Also in use is simonlast's [node-persist](https://github.com/simonlast/node-persist) for persistent storage of playlist data.
 
-We extend our everlasting gratitude to both of you!
+We extend our everlasting gratitude to all of you!
 
 ## License
 This software is released under the MIT license, which can be found under `licenses/crispyfi`.
