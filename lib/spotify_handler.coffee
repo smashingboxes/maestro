@@ -1,5 +1,10 @@
 class SpotifyHandler
   constructor: (options) ->
+    @banned = [
+      'spotify:track:6qR9iLM6J3u0mdGlqtldt8',
+      'spotify:track:2ZCTP54O2dMSbVrdsg60to'
+    ]
+
     @spotify = options.spotify
     @config = options.config
     @storage = options.storage
@@ -127,7 +132,7 @@ class SpotifyHandler
     if track_or_link?
       if typeof(track_or_link) == 'string' && /track/.test(track_or_link)
         # Fuck Barbie Girl
-        return if (@_sanitize_link(track_or_link) == 'spotify:track:2ZCTP54O2dMSbVrdsg60to')
+        return if @banned.indexOf(@_sanitize_link(track_or_link)) > -1
         # We got a link from Slack
         # Links from Slack are encased like this: <spotify:track:1kl0Vn0FO4bbdrTbHw4IaQ>
         # So we remove everything that is neither char, number or a colon.
