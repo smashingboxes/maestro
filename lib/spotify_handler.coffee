@@ -125,7 +125,9 @@ class SpotifyHandler
     @paused = false
     # If a track is given, immediately switch to it
     if track_or_link?
-      if typeof(track_or_link) == 'string' && /track/.test(track_or_link)
+      if typeof(track_or_link) == 'string' && /track/.test(track_or_link) && track_or_link != 'spotify:track:2ZCTP54O2dMSbVrdsg60to'
+        # Fuck Barbie Girl
+        return if (@_sanitize_link(track_or_link) == 'spotify:track:2ZCTP54O2dMSbVrdsg60to')
         # We got a link from Slack
         # Links from Slack are encased like this: <spotify:track:1kl0Vn0FO4bbdrTbHw4IaQ>
         # So we remove everything that is neither char, number or a colon.
