@@ -125,20 +125,19 @@ class SpotifyHandler
     @paused = false
     # If a track is given, immediately switch to it
     if track_or_link?
-      switch typeof track_or_link
+      if typeof(track_or_link) == 'string' && /track/.test(track_or_link)
         # We got a link from Slack
-        when 'string'
-          # Links from Slack are encased like this: <spotify:track:1kl0Vn0FO4bbdrTbHw4IaQ>
-          # So we remove everything that is neither char, number or a colon.
-          new_track = @spotify.createFromLink @_sanitize_link(track_or_link)
-          # If the track was somehow invalid, don't do anything
-          return if !new_track?
+        # Links from Slack are encased like this: <spotify:track:1kl0Vn0FO4bbdrTbHw4IaQ>
+        # So we remove everything that is neither char, number or a colon.
+        new_track = @spotify.createFromLink @_sanitize_link(track_or_link)
+        # If the track was somehow invalid, don't do anything
+        return if !new_track?
         # We also use this to internally trigger playback of already-loaded tracks
-        when 'object'
-          new_track = track_or_link
+      else if typeof(track_or_link) == 'object'
+        new_track = track_or_link
         # Other input is simply disregarded
-        else
-          return
+      else
+        return
     # If we are already playing, simply resume
     else if @playing
       return @spotify.player.resume()
