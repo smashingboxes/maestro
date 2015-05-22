@@ -170,8 +170,7 @@ class SpotifyHandler
     # If a track is given, immediately switch to it
     if track_or_link?
       if typeof(track_or_link) == 'string' && /track/.test(track_or_link)
-        # Fuck Barbie Girl
-        return if isBanned(@_sanitize_link(track_or_link))
+        return if @is_banned(@_sanitize_link(track_or_link))
         # We got a link from Slack
         # Links from Slack are encased like this: <spotify:track:1kl0Vn0FO4bbdrTbHw4IaQ>
         # So we remove everything that is neither char, number or a colon.
