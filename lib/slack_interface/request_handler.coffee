@@ -38,7 +38,6 @@ class SlackInterfaceRequestHandler
                   switch @auth.args[0]
                     when "up" then @volume.up()
                     when "down" then @volume.down()
-                    else reply_data['text'] = "NO YOU"
                 else
                   reply_data['text'] = "Current Volume: *#{@volume.current_step}*"
 
