@@ -116,7 +116,6 @@ class SpotifyHandler
 
   is_bannable: (track_uri, requesting_user) ->
     ban_deck = @storage.getItem("ban_deck")
-    console.log(ban_deck)
     delete ban_deck[requesting_user]
     for user , bans of ban_deck
       return true if bans.indexOf(track_uri) > -1
