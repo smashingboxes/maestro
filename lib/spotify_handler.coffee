@@ -1,14 +1,19 @@
 class SpotifyHandler
   constructor: (options) ->
-    @banned = [
-      'spotify:track:6qR9iLM6J3u0mdGlqtldt8',
-      'spotify:track:2ZCTP54O2dMSbVrdsg60to'
-    ]
-
     @spotify = options.spotify
     @config = options.config
     @storage = options.storage
     @storage.initSync()
+
+    unless @storage.getItem("banned")
+      banned = [
+        'spotify:track:6qR9iLM6J3u0mdGlqtldt8',
+        'spotify:track:2ZCTP54O2dMSbVrdsg60to'
+      ]
+      @storage.setItem("banned", banned)
+
+    unless @storage.getItem("ban_deck")
+      @storage.setItem("ban_deck", {})
 
     @connect_timeout = null
     @connected = false
@@ -88,12 +93,45 @@ class SpotifyHandler
     return
 
 
+  banCurrentSong: (requesting_user) ->
+    track_uri = @state.track.object.link
+    return false if @is_banned(track_uri)
+    banned = @storage.getItem("banned")
+    if @is_bannable(track_uri, requesting_user)
+      banned.push track_uri
+      @storage.setItem("banned", banned)
+      return 'banned'
+    else
+      @putOnBanDeck(track_uri, requesting_user)
+      return 'on deck to be banned'
+
+  putOnBanDeck: (track_uri, requesting_user) ->
+    ban_deck = @storage.getItem("ban_deck")
+    if ban_deck[requesting_user]?
+      ban_deck[requesting_user].push track_uri unless ban_deck[requesting_user].indexOf(track_uri) > -1
+    else
+      ban_deck[requesting_user] = [track_uri]
+    @storage.setItem("ban_deck", ban_deck)
+
+  is_bannable: (track_uri, requesting_user) ->
+    ban_deck = @storage.getItem("ban_deck")
+    console.log(ban_deck)
+    delete ban_deck[requesting_user]
+    for user , bans of ban_deck
+      return true if bans.indexOf(track_uri) > -1
+    false
+
+  bannedSongs: ->
+    @storage.getItem("banned")
+
+  is_banned: (uri) ->
+    @storage.getItem("banned").indexOf(uri) > -1
+
   # Pauses playback at the current time. Can be resumed by calling @play().
   pause: ->
     @paused = true
     @spotify.player.pause()
     return
-
 
   # Stops playback. This does not just pause, but returns to the start of the current track.
   # This state can not be changed by simply calling @spotify.player.resume(), because reasons.
@@ -132,7 +170,7 @@ class SpotifyHandler
     if track_or_link?
       if typeof(track_or_link) == 'string' && /track/.test(track_or_link)
         # Fuck Barbie Girl
-        return if @banned.indexOf(@_sanitize_link(track_or_link)) > -1
+        return if isBanned(@_sanitize_link(track_or_link))
         # We got a link from Slack
         # Links from Slack are encased like this: <spotify:track:1kl0Vn0FO4bbdrTbHw4IaQ>
         # So we remove everything that is neither char, number or a colon.

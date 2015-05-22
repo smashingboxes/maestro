@@ -4,10 +4,12 @@ class AuthHandler
 
   validate: (request, response) ->
     @command = null
+    @user = null
     @args = []
     return false unless (request.body?.text? && request.body?.token?)
 
     if request.body.token in @auth_data.tokens
+      @user = request.body.user_id
       parts = request.body.text.split ' '
       if parts.length > 0
         @command = parts.shift()
