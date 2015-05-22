@@ -38,7 +38,7 @@ class SlackInterfaceRequestHandler
                   switch @auth.args[0]
                     when "up" then @volume.up()
                     when "down" then @volume.down()
-                    else @volume.set @auth.args[0]
+                    else reply_data['text'] = "NO YOU"
                 else
                   reply_data['text'] = "Current Volume: *#{@volume.current_step}*"
 
@@ -72,6 +72,7 @@ class SlackInterfaceRequestHandler
               when 'voteban'
                 if status = @spotify.banCurrentSong(@auth.user)
                   reply_data['text'] = "#{@spotify.state.track.name} is #{status}"
+                  @spotify.skip() if status == 'banned'
                 else
                   reply_data['text'] = "#{@spotify.state.track.name} has *already* been banned"
 

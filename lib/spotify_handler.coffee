@@ -100,7 +100,6 @@ class SpotifyHandler
     if @is_bannable(track_uri, requesting_user)
       banned.push track_uri
       @storage.setItem("banned", banned)
-      @skip()
       return 'banned'
     else
       @putOnBanDeck(track_uri, requesting_user)
