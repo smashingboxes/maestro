@@ -26,7 +26,7 @@ class VolumeHandler
     # Sanity check. There is probably a much more elegant way to do this, tips are welcome.
     step = parseInt step
     if isNaN(step)
-      step = 0
+      step = @current_step
 
     return 0 if step <= 0
     return 10 if step >= 10
