@@ -10,6 +10,7 @@ class AuthHandler
 
     if request.body.token in @auth_data.tokens
       @user = request.body.user_id
+      @user_name = request.body.user_name
       parts = request.body.text.split ' '
       if parts.length > 0
         @command = parts.shift()
