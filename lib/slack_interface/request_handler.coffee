@@ -73,6 +73,9 @@ class SlackInterfaceRequestHandler
               when 'playbettermusic'
                 status = @spotify.set_playlist 'sb-better-music'
                 reply_data['text'] = 'Oh good idea!'
+              when 'fuckyoudoug'
+                @spotify.play 'spotify:track:1ExT2IobvisyruAWTmlhoS'
+                reply_data['text'] = 'Yeah fuck that guy!'
               when 'voteban'
                 if status = @spotify.banCurrentSong(@auth.user)
                   reply_data['text'] = "#{@spotify.state.track.name} is #{status}"
