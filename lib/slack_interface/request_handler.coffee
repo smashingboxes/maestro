@@ -14,7 +14,7 @@ class SlackInterfaceRequestHandler
 
             reply_data = { ok: true }
 
-            return unless @auth.user_name == 'brandonmathis'
+            # return unless @auth.user_name == 'brandonmathis'
             switch @auth.command
               when 'pause' then @spotify.pause()
               when 'stop' then @spotify.stop()
