@@ -168,7 +168,6 @@ class SpotifyHandler
     # If a track is given, immediately switch to it
     if track_or_link?
       if typeof(track_or_link) == 'string' && /track/.test(track_or_link)
-        return if @is_banned(@_sanitize_link(track_or_link))
         # We got a link from Slack
         # Links from Slack are encased like this: <spotify:track:1kl0Vn0FO4bbdrTbHw4IaQ>
         # So we remove everything that is neither char, number or a colon.
@@ -199,16 +198,17 @@ class SpotifyHandler
 
   # Handles the actual playback once the track object has been loaded from Spotify
   _play_callback: (track) ->
-    @state.track.object = track
-    @state.track.name = @state.track.object.name
-    @state.track.artists = @state.track.object.artists.map((artist) ->
-      artist.name
-    ).join ", "
+    if @is_banned(@_sanitize_link(track.link))
+      @skip()
+    else
+      @state.track.object = track
+      @state.track.name = @state.track.object.name
+      @state.track.artists = @state.track.object.artists.map((artist) ->
+        artist.name
+      ).join ", "
 
-    @spotify.player.play @state.track.object
-    @playing = true
-    return
-
+      @spotify.player.play @state.track.object
+      @playing = true
 
   # Gets the next track from the playlist.
   get_next_track: ->
