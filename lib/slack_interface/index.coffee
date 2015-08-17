@@ -1,5 +1,6 @@
 module.exports = () ->
   Config = require '../../config.json'
+  CronJob = require('cron').CronJob
   os = require 'os'
   path = require 'path'
 
@@ -23,5 +24,12 @@ module.exports = () ->
     storage: require 'node-persist'
     config: Config.spotify
   })
+
+  nightlyReset = new CronJob
+    crontTime: "00 30 19 * * 1-5"
+    onTick: ->
+      SpotifyHandler.stop()
+      VolumeHandler.set(3)
+    start: true
 
   return require('./request_handler')(AuthHandler, SpotifyHandler, VolumeHandler)
