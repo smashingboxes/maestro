@@ -24,7 +24,7 @@ class SpotifyHandler
     @paused = false
 
     @state = {
-      shuffle: true
+      random: true
       track:
         object: null
         index: 0
@@ -148,9 +148,9 @@ class SpotifyHandler
     return
 
 
-  # Toggles shuffle on and off. MAGIC!
-  toggle_shuffle: ->
-    @shuffle = !@shuffle
+  # Toggles random on and off. MAGIC!
+  toggle_random: ->
+    @random = !@random
 
 
   is_playing: ->
@@ -212,7 +212,7 @@ class SpotifyHandler
 
   # Gets the next track from the playlist.
   get_next_track: ->
-    if @shuffle
+    if @random
       @state.track.index = Math.floor(Math.random() * @state.playlist.object.numTracks)
     else
       @state.track.index = ++@state.track.index % @state.playlist.object.numTracks
