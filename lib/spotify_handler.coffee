@@ -217,7 +217,7 @@ class SpotifyHandler
 
   # Handles the actual playback once the track object has been loaded from Spotify
   _play_callback: (track) ->
-    if @is_banned(@_sanitize_link(track.link))
+    if @is_banned(@_sanitize_link(track.link)) || !track.availability
       @skip()
     else
       @state.track.object = track
