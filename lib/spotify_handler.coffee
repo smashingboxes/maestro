@@ -1,3 +1,5 @@
+_ = require 'lodash'
+
 class SpotifyHandler
   constructor: (options) ->
     @spotify = options.spotify
@@ -24,6 +26,7 @@ class SpotifyHandler
     @paused = false
 
     @state = {
+      random: false
       shuffle: true
       track:
         object: null
@@ -33,6 +36,7 @@ class SpotifyHandler
       playlist:
         name: null
         object: null
+        shuffledTracks: null
     }
 
     @playlists = @storage.getItem('playlists') || {}
@@ -90,6 +94,7 @@ class SpotifyHandler
     @state.playlist.object.on
       tracksAdded: @update_playlist.bind(this)
       tracksRemoved: @update_playlist.bind(this)
+    @_shuffle_playlist(playlist) if @state.shuffle
     return
 
 
@@ -148,9 +153,23 @@ class SpotifyHandler
     return
 
 
-  # Toggles shuffle on and off. MAGIC!
+  # Toggles random on and off. MAGIC!
+  toggle_random: ->
+    @state.random = !@state.random
+
+    # We don't want to simultaneously be running shuffle
+    # and random, so turn off shuffle if random is active
+    @state.shuffle = false if @state.random
+
   toggle_shuffle: ->
-    @shuffle = !@shuffle
+    @state.shuffle = !@state.shuffle
+    @state.track.index = 0
+
+    if @state.shuffle
+      # We don't want to simultaneously be running random
+      # and shuffle, so turn off random is shuffle is active
+      @state.random = false
+      @_shuffle_playlist(@state.playlist.object)
 
 
   is_playing: ->
@@ -198,7 +217,7 @@ class SpotifyHandler
 
   # Handles the actual playback once the track object has been loaded from Spotify
   _play_callback: (track) ->
-    if @is_banned(@_sanitize_link(track.link))
+    if @is_banned(@_sanitize_link(track.link)) || !track.availability
       @skip()
     else
       @state.track.object = track
@@ -210,14 +229,26 @@ class SpotifyHandler
       @spotify.player.play @state.track.object
       @playing = true
 
-  # Gets the next track from the playlist.
+  # Gets the next track from the playlist. Uses modulus to easily
+  # restart the playlist once it has played all the way through
   get_next_track: ->
-    if @shuffle
-      @state.track.index = Math.floor(Math.random() * @state.playlist.object.numTracks)
-    else
-      @state.track.index = ++@state.track.index % @state.playlist.object.numTracks
-    @state.playlist.object.getTrack(@state.track.index)
+    index = if @state.shuffle
+        @_translate_shuffled_track_index(@state.track.index++ % @state.playlist.object.numTracks)
+      else if @state.random
+        @state.track.index = Math.floor(Math.random() * @state.playlist.object.numTracks)
+      else
+        @state.track.index++ % @state.playlist.object.numTracks
 
+    @state.playlist.object.getTrack(index)
+
+  _shuffle_playlist: (playlist) ->
+    @state.playlist.shuffledTracks = _.shuffle(playlist.getTracks())
+
+  _translate_shuffled_track_index: (shuffledIndex) ->
+    track = @state.playlist.shuffledTracks[shuffledIndex]
+    translatedIndex = _.findIndex(@state.playlist.object.getTracks(), link: track.link)
+
+    return translatedIndex
 
   # Changes the current playlist and starts playing.
   # Since the playlist might have loaded before we can attach our callback, the actual playlist-functionality
@@ -242,7 +273,8 @@ class SpotifyHandler
     @update_playlist null, playlist
 
     @state.track.index = 0
-    @play @state.playlist.object.getTrack(@state.track.index)
+    @play @get_next_track()
+
     # Also store the name as our last_playlist for the next time we start up
     @storage.setItem 'last_playlist', name
     return
