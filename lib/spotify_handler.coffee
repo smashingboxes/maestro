@@ -217,7 +217,7 @@ class SpotifyHandler
 
   # Handles the actual playback once the track object has been loaded from Spotify
   _play_callback: (track) ->
-    if @is_banned(@_sanitize_link(track.link)) || !track.availability
+    if @is_banned(@_sanitize_link(track.link))
       @skip()
     else
       @state.track.object = track
@@ -226,8 +226,15 @@ class SpotifyHandler
         artist.name
       ).join ", "
 
-      @spotify.player.play @state.track.object
-      @playing = true
+      # Some tracks aren't available in our region or Spotify has lost the rights to. Newer versions
+      # of node-spotify support the availability property on tracks, but with 0.6.0, we just need to
+      # try to play the song and skip to the next one automatically if it fails
+      try
+        @spotify.player.play @state.track.object
+        @playing = true
+      catch
+        @skip()
+
 
   # Gets the next track from the playlist. Uses modulus to easily
   # restart the playlist once it has played all the way through
