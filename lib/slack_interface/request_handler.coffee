@@ -30,19 +30,9 @@ class SlackInterfaceRequestHandler
                 else
                     @spotify.play()
 
-              when 'random'
-                @spotify.toggle_random()
-                reply_data['text'] = if @spotify.state.random
-                    "CHAOS"
-                  else
-                    "Don't be a square."
-
               when 'shuffle'
                 @spotify.toggle_shuffle()
-                reply_data['text'] = if @spotify.state.shuffle
-                    "ERRYDAY I'M SHUFFLING."
-                  else
-                    "I am no longer shuffling. Thanks for ruining my fun."
+                reply_data['text'] = if @spotify.shuffle then "ERRYDAY I'M SHUFFLING." else "I am no longer shuffling. Thanks for ruining my fun."
 
               when 'vol'
                 if @auth.args[0]?
@@ -71,31 +61,21 @@ class SlackInterfaceRequestHandler
                   reply_data['text'] = str
 
               when 'status'
-                playlistOrderPhrase = if @spotify.state.shuffle
-                    " and it is being shuffled"
-                  else if @spotify.state.random
-                    " and tracks are being chosen at random"
-                  else
-                    ""
-
+                shuffleword = if @spotify.shuffle then '' else ' not'
                 if @spotify.is_paused()
-                  reply_data['text'] = "Playback is currently *paused* on a song titled *#{@spotify.state.track.name}* from *#{@spotify.state.track.artists}*.\nYour currently selected playlist is named *#{@spotify.state.playlist.name}*#{randomPhrase}. Resume playback with `play`."
+                  reply_data['text'] = "Playback is currently *paused* on a song titled *#{@spotify.state.track.name}* from *#{@spotify.state.track.artists}*.\nYour currently selected playlist, which you are#{shuffleword} shuffling through, is named *#{@spotify.state.playlist.name}*. Resume playback with `play`."
                 else if !@spotify.is_playing()
                   reply_data['text'] = "Playback is currently *stopped*. You can start it again by choosing an available `list`."
                 else
-                  reply_data['text'] = "You are currently letting your ears feast on the beautiful tunes titled *#{@spotify.state.track.name}* from *#{@spotify.state.track.artists}*.\nYour currently selected playlist is named *#{@spotify.state.playlist.name}*#{randomPhrase}."
-
+                  reply_data['text'] = "You are currently letting your ears feast on the beautiful tunes titled *#{@spotify.state.track.name}* from *#{@spotify.state.track.artists}*.\nYour currently selected playlist, which you are#{shuffleword} shuffling through, is named *#{@spotify.state.playlist.name}*."
               when 'help'
-                reply_data['text'] = "You seem lost. Here is a list of commands that are available to you:   \n   \n*Commands*\n> `play [Spotify URI]` - Starts/resumes playback if no URI is provided. If a URI is given, immediately switches to the linked track.\n> `pause` - Pauses playback at the current time.\n> `stop` - Stops playback and resets to the beginning of the current track.\n> `skip` - Skips to the next track in the playlist.\n> `random` - Toggles random mode on or off.\n> `shuffle` - Toggles shuffle mode on or off.\n> `vol [up|down|0..10]` Turns the volume either up/down one notch or directly to a step between `0` (mute) and `10` (full blast). Also goes to `11`.\n> `mute` - Same as `vol 0`.\n> `unmute` - Same as `vol 0`.\n> `status` - Shows the currently playing song, playlist and whether you're in random mode or not.\n> `voteban` - Cast a vote to have the current track banned \n> `banned` - See tracks that are currently banned \n> `help` - Shows a list of commands with a short explanation.\n   \n*Playlists*\n> `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.\n> `list remove <name>` - Removes the specified list.\n> `list rename <old name> <new name>` - Renames the specified list.\n> `list <name>` - Selects the specified list and starts playback."
-
+                reply_data['text'] = "You seem lost. Here is a list of commands that are available to you:   \n   \n*Commands*\n> `play [Spotify URI]` - Starts/resumes playback if no URI is provided. If a URI is given, immediately switches to the linked track.\n> `pause` - Pauses playback at the current time.\n> `stop` - Stops playback and resets to the beginning of the current track.\n> `skip` - Skips (or shuffles) to the next track in the playlist.\n> `shuffle` - Toggles shuffle on or off.\n> `vol [up|down|0..10]` Turns the volume either up/down one notch or directly to a step between `0` (mute) and `10` (full blast). Also goes to `11`.\n> `mute` - Same as `vol 0`.\n> `unmute` - Same as `vol 0`.\n> `status` - Shows the currently playing song, playlist and whether you're shuffling or not.\n> `voteban` - Cast a vote to have the current track banned \n> `banned` - See tracks that are currently banned \n> `help` - Shows a list of commands with a short explanation.\n   \n*Playlists*\n> `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.\n> `list remove <name>` - Removes the specified list.\n> `list rename <old name> <new name>` - Renames the specified list.\n> `list <name>` - Selects the specified list and starts playback."
               when 'playbettermusic'
                 status = @spotify.set_playlist 'sb-better-music'
                 reply_data['text'] = 'Oh good idea!'
-
               when 'fuckyoudoug'
                 @spotify.play 'spotify:track:1ExT2IobvisyruAWTmlhoS'
                 reply_data['text'] = 'Yeah fuck that guy!'
-
               when 'voteban'
                 if status = @spotify.banCurrentSong(@auth.user)
                   reply_data['text'] = "#{@spotify.state.track.name} is #{status}"

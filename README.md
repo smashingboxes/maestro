@@ -57,9 +57,8 @@ Currently the following trigger words are available:
 * `play [Spotify URI]` - Starts/resumes playback if no URI is provided. If a URI is given, immediately switches to the linked track.
 * `pause` - Pauses playback at the current time.
 * `stop` - Stops playback and resets to the beginning of the current track.
-* `skip` - Skips to the next track in the playlist.
-* `random` - Toggles random mode on or off.
-* `shuffle` - Toggles shuffle mode on or off.
+* `skip` - Skips (or shuffles) to the next track in the playlist.
+* `shuffle` - Toggles shuffle on or off.
 * `vol [up|down|0..10]` Turns the volume either up/down one notch or directly to a step between 0 (mute) and 10 (full blast). Also goes to eleven.
 * `list [command] [options]` - See playlists section below.
 * `status` - Shows the currently playing song, playlist and whether you're shuffling or not.
