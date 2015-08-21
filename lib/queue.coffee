@@ -11,7 +11,6 @@ class Queue
     @data.length
 
   push: (track) ->
-    console.log @trackIsInQueue(track)
     return false if @data.length > 10 || @trackIsInQueue(track)
     @data.push(track)
 
