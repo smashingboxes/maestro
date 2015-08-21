@@ -6,6 +6,7 @@ class SpotifyHandler
     @config = options.config
     @storage = options.storage
     @storage.initSync()
+    @queue = new Queue()
 
     unless @storage.getItem("banned")
       banned = [
@@ -55,6 +56,13 @@ class SpotifyHandler
   connect: ->
     @spotify.login @config.username, @config.password, false, false
 
+  pushQueue: (track_uri) ->
+    if /track/.test(track_uri)
+      track = @spotify.createFromLink @_sanitize_link(track_uri)
+      @queue.push(track)
+
+  showQueue: () ->
+    @queue.show()
 
   # Called after we have successfully connected to Spotify.
   # Clears the connect-timeout and grabs the default Playlist (or resumes playback if another playlist was set).
@@ -149,8 +157,11 @@ class SpotifyHandler
 
   # Plays the next track in the playlist
   skip: ->
-    @play @get_next_track()
-    return
+    if @queue.length() > 0
+      @play(@queue.pop().link)
+    else
+      @play @get_next_track()
+  # Toggles shuffle on and off. MAGIC!
 
 
   # Toggles random on and off. MAGIC!
@@ -234,7 +245,6 @@ class SpotifyHandler
         @playing = true
       catch
         @skip()
-
 
   # Gets the next track from the playlist. Uses modulus to easily
   # restart the playlist once it has played all the way through

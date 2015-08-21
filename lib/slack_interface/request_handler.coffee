@@ -26,11 +26,20 @@ class SlackInterfaceRequestHandler
               when 'mute' then @volume.set 0
               when 'unmute' then @volume.set 5
 
+              when 'queue'
+                @spotify.pushQueue(@auth.args[0]) if @auth.args[0]?
+                queued_tracks = @spotify.showQueue()
+                reply_data['text'] = ":musical_note: Queued Tracks :musical_note:\n"
+                for track in queued_tracks
+                  reply_data['text'] += "#{track.name} *#{track.artists[0].name}* [#{track.album.name}]\n"
+
               when 'play'
-                if @auth.args[0]?
-                    @spotify.play @auth.args[0]
+                if @auth.args[0]? && @spotify.queue.length() > 0
+                  reply_data['text'] = "Please use the queue."
+                else if @auth.args[0]?
+                  @spotify.play @auth.args[0]
                 else
-                    @spotify.play()
+                  @spotify.play()
 
               when 'random'
                 @spotify.toggle_random()
