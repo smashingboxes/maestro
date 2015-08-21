@@ -11,8 +11,13 @@ class Queue
     @data.length
 
   push: (track) ->
-    unless @data.length > 10
-      @data.push(track)
-    @data
+    console.log @trackIsInQueue(track)
+    return false if @data.length > 10 || @trackIsInQueue(track)
+    @data.push(track)
+
+  trackIsInQueue: (track) ->
+    @data.filter( (obj) ->
+      obj.link == track.link
+    ) > 0
 
 module.exports = Queue
