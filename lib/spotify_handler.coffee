@@ -59,8 +59,10 @@ class SpotifyHandler
   pushQueue: (track_uri) ->
     if /track/.test(track_uri)
       track = @spotify.createFromLink @_sanitize_link(track_uri)
-      @spotify.waitForLoaded [track], () =>
+      if track.isLoaded
         @queue.push(track)
+      @spotify.waitForLoaded [track], (t) =>
+        @queue.push(t)
 
   showQueue: () ->
     @queue.show()

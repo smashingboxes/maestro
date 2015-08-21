@@ -17,6 +17,6 @@ class Queue
   trackIsInQueue: (track) ->
     @data.filter( (obj) ->
       obj.link == track.link
-    ) > 0
+    ).length > 0
 
 module.exports = Queue
