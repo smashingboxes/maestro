@@ -5,7 +5,7 @@ class Queue
     @data
 
   pop: () ->
-    @data.pop()
+    @data.shift()
 
   length: ->
     @data.length

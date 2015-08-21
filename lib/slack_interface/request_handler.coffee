@@ -33,8 +33,9 @@ class SlackInterfaceRequestHandler
                 else
                   queued_tracks = @spotify.showQueue()
                   reply_data['text'] = ":musical_note: Queued Tracks :musical_note:\n"
-                  for track in queued_tracks
-                    reply_data['text'] += "#{track.name} *#{track.artists[0].name}* [#{track.album.name}]\n"
+                  queued_tracks.forEach( (track, index) ->
+                    reply_data['text'] += "#{index + 1}. #{track.name} *#{track.artists[0].name}* [#{track.album.name}]\n"
+                  )
 
               when 'play'
                 if @auth.args[0]? && @spotify.queue.length() > 0
