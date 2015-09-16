@@ -17,7 +17,7 @@ class SlackInterfaceRequestHandler
             return if @auth.user_name == 'slackbot'
             return if @auth.user_name == 'doug'
 
-            switch @auth.command
+            switch @auth.command.toLowerCase()
               when 'pause' then @spotify.pause()
               when 'stop' then @spotify.stop()
               when 'skip' then @spotify.skip()
@@ -122,11 +122,7 @@ class SlackInterfaceRequestHandler
                 reply_data['text'] = ":rotating_light: BANNED TRACKS :rotating_light: \n#{@spotify.bannedSongs().join("\n")}"
 
               else
-                # Fallback to external plugins.
-                status = @plugin_handler.handle(@auth, @spotify, @volume)
-                if status?
-                  reply_data['text'] = status
-
+                #Just ignore and carry on
             response.serveJSON reply_data
             return
           return
