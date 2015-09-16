@@ -26,7 +26,7 @@ module.exports = () ->
   })
 
   nightlyReset = new CronJob
-    crontTime: "00 30 19 * * 1-5"
+    cronTime: "00 30 19 * * 1-5"
     onTick: ->
       SpotifyHandler.stop()
       VolumeHandler.set(3)
