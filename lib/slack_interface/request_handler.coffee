@@ -103,14 +103,6 @@ class SlackInterfaceRequestHandler
               when 'help'
                 reply_data['text'] = "You seem lost. Here is a list of commands that are available to you:   \n   \n*Commands*\n> `play [Spotify URI]` - Starts/resumes playback if no URI is provided. If a URI is given, immediately switches to the linked track.\n> `pause` - Pauses playback at the current time.\n> `stop` - Stops playback and resets to the beginning of the current track.\n> `skip` - Skips (or shuffles) to the next track in the playlist.\n> `shuffle` - Toggles shuffle on or off.\n> `vol [up|down|0..10]` Turns the volume either up/down one notch or directly to a step between `0` (mute) and `10` (full blast). Also goes to `11`.\n> `mute` - Same as `vol 0`.\n> `unmute` - Same as `vol 0`.\n> `status` - Shows the currently playing song, playlist and whether you're shuffling or not.\n> `voteban` - Cast a vote to have the current track banned \n> `banned` - See tracks that are currently banned \n> `help` - Shows a list of commands with a short explanation.\n \n *Queue* \n \n> `queue [Spotify URI]` - Add a song to the queue\n> `queue` - See the tracks currently in the queue \n  \n*Playlists*\n> `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.\n> `list remove <name>` - Removes the specified list.\n> `list rename <old name> <new name>` - Renames the specified list.\n> `list <name>` - Selects the specified list and starts playback."
 
-              when 'playbettermusic'
-                status = @spotify.set_playlist 'sb-better-music'
-                reply_data['text'] = 'Oh good idea!'
-
-              when 'fuckyoudoug'
-                @spotify.play 'spotify:track:1ExT2IobvisyruAWTmlhoS'
-                reply_data['text'] = 'Yeah fuck that guy!'
-
               when 'voteban'
                 if status = @spotify.banCurrentSong(@auth.user)
                   reply_data['text'] = "#{@spotify.state.track.name} is #{status}"
