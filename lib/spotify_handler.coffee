@@ -8,6 +8,8 @@ class SpotifyHandler
     @storage.initSync()
     @queue = new Queue()
 
+    @queued_song_playing = false
+
     unless @storage.getItem("banned")
       banned = [
         'spotify:track:6qR9iLM6J3u0mdGlqtldt8',
@@ -108,6 +110,7 @@ class SpotifyHandler
     @_shuffle_playlist(playlist) if @state.shuffle
     return
 
+  # Banning
   banCurrentSong: (requesting_user) ->
     vote_count = 3
     track_uri = @state.track.object.link
@@ -129,7 +132,6 @@ class SpotifyHandler
   is_banned: (uri) ->
     @storage.getItem("banned").indexOf(uri) > -1
 
-
   bannedSongs: ->
     @storage.getItem("banned")
 
@@ -148,15 +150,37 @@ class SpotifyHandler
     @spotify.player.stop()
     return
 
-
   # Plays the next track in the playlist
-  skip: ->
-    if @queue.length() > 0
-      @play(@queue.pop().link)
+  skip: (requesting_user = undefined) ->
+    if @queued_song_playing && !_.isUndefined(requesting_user)
+      return @voteSkip(requesting_user)
     else
-      @play @get_next_track()
-  # Toggles shuffle on and off. MAGIC!
+      @voteskips = []
+      # Check if there is a queue
+      if @queue.length() == 0
+        @play @get_next_track()
+        @queued_song_playing = false
+      else
+        @play(@queue.pop().link)
+        @queued_song_playing = true
 
+  voteSkip: (requesting_user) ->
+    @queued_song_playing = true
+    @voteskips ||= []
+    # requested_skips = _.uniq(@voteskips.concat([requesting_user]))
+    requested_skips = @voteskips.concat([requesting_user])
+    if requested_skips.length < 3
+      @voteskips = requested_skips
+      return "skip requested (#{requested_skips.length}/#{3})"
+    else
+      if @queue.length() > 0
+        @queued_song_playing = true
+        @play(@queue.pop().link)
+      else
+        @queued_song_playing = false
+        @skip()
+      @voteskips = []
+      return "skip vote passed (#{requested_skips.length}/#{3}) [#{requested_skips}]"
 
   # Toggles random on and off. MAGIC!
   toggle_random: ->

@@ -15,12 +15,14 @@ class SlackInterfaceRequestHandler
             reply_data = { ok: true }
 
             return if @auth.user_name == 'slackbot'
-            return if @auth.user_name == 'doug'
 
             switch @auth.command.toLowerCase()
               when 'pause' then @spotify.pause()
               when 'stop' then @spotify.stop()
-              when 'skip' then @spotify.skip()
+              when 'skip'
+                message = @spotify.skip(@auth.user_name)
+                if typeof(message) == 'string'
+                  reply_data['text'] = message
               when 'reconnect' then @spotify.connect()
               when 'restart' then process.exit 1
               when 'mute' then @volume.set 0
