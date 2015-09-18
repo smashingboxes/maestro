@@ -167,8 +167,7 @@ class SpotifyHandler
   voteSkip: (requesting_user) ->
     @queued_song_playing = true
     @voteskips ||= []
-    # requested_skips = _.uniq(@voteskips.concat([requesting_user]))
-    requested_skips = @voteskips.concat([requesting_user])
+    requested_skips = _.uniq(@voteskips.concat([requesting_user]))
     if requested_skips.length < 3
       @voteskips = requested_skips
       return "skip requested (#{requested_skips.length}/#{3})"
