@@ -108,39 +108,30 @@ class SpotifyHandler
     @_shuffle_playlist(playlist) if @state.shuffle
     return
 
-
   banCurrentSong: (requesting_user) ->
+    vote_count = 3
     track_uri = @state.track.object.link
+    ban_deck = @storage.getItem('ban_deck')
+    votes = ban_deck[track_uri] || []
+    votes.push requesting_user
     return false if @is_banned(track_uri)
-    banned = @storage.getItem("banned")
-    if @is_bannable(track_uri, requesting_user)
+    if votes.length >= vote_count
+      banned = @storage.getItem("banned")
       banned.push track_uri
       @storage.setItem("banned", banned)
       return 'banned'
     else
-      @putOnBanDeck(track_uri, requesting_user)
-      return 'on deck to be banned'
-
-  putOnBanDeck: (track_uri, requesting_user) ->
-    ban_deck = @storage.getItem("ban_deck")
-    if ban_deck[requesting_user]?
-      ban_deck[requesting_user].push track_uri unless ban_deck[requesting_user].indexOf(track_uri) > -1
-    else
-      ban_deck[requesting_user] = [track_uri]
-    @storage.setItem("ban_deck", ban_deck)
-
-  is_bannable: (track_uri, requesting_user) ->
-    ban_deck = @storage.getItem("ban_deck")
-    delete ban_deck[requesting_user]
-    for user , bans of ban_deck
-      return true if bans.indexOf(track_uri) > -1
-    false
-
-  bannedSongs: ->
-    @storage.getItem("banned")
+      votes = _.uniq(votes)
+      ban_deck[track_uri] = votes
+      @storage.setItem('ban_deck', ban_deck)
+      return "on deck to be banned (#{votes.length}/#{vote_count})"
 
   is_banned: (uri) ->
     @storage.getItem("banned").indexOf(uri) > -1
+
+
+  bannedSongs: ->
+    @storage.getItem("banned")
 
   # Pauses playback at the current time. Can be resumed by calling @play().
   pause: ->
@@ -220,6 +211,8 @@ class SpotifyHandler
     else if !new_track
       new_track = @get_next_track()
 
+    # Explicitly return and dont play if that track is banned
+    return if @is_banned(new_track.link)
     # We need to check whether the track has already completely loaded.
     if new_track? && new_track.isLoaded
       @_play_callback new_track
