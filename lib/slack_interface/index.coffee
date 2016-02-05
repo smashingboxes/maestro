@@ -14,11 +14,14 @@ module.exports = () ->
   else
     Spotify = require "../spotify/mac/spotify"
 
+  # TODO
   # Request authentication.
-  # I'd love to use a "proper" ApiServer-middleware, but we need the request's body to do this, which
-  # requires us to resume() the request and wait for a callback, which is impractical in a middleware.
-  AuthHandler = require('../auth_handler')(Config.auth);
-  VolumeHandler = require('../volume_handler')();
+  # I'd love to use a "proper" ApiServer-middleware,
+  # but we need the request's body to do this, which
+  # requires us to resume() the request and wait for
+  # a callback, which is impractical in a middleware.
+  AuthHandler = require('../auth_handler')(Config.auth)
+  VolumeHandler = require('../volume_handler')()
   SpotifyHandler = require('../spotify_handler')({
     spotify: Spotify { appkeyFile: appkey_path  }
     storage: require 'node-persist'
