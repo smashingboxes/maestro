@@ -3,7 +3,6 @@ class SlackInterfaceRequestHandler
     @auth = auth
     @spotify = spotify
     @volume = volume
-    @plugin_handler = require("../../lib/plugin_handler")()
 
     @endpoints =
       handle:
