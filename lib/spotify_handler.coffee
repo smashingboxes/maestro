@@ -1,4 +1,5 @@
 _ = require 'lodash'
+Queue = require './queue'
 
 class SpotifyHandler
   constructor: (options) ->
