@@ -318,6 +318,8 @@ class SpotifyHandler
 
   # Adds a playlist to the storage and updates our internal list
   add_playlist: (name, spotify_url) ->
+    console.log(name)
+    console.log(spotify_url)
     return false if !name? || @valid_spotify_playlist_url(spotify_url)
     spotify_url = @_sanitize_link spotify_url.match(/spotify:user:.*:playlist:[0-9a-zA-Z]+/g)[0]
     @playlists[name] = spotify_url

@@ -25,11 +25,18 @@ class SlackInterfaceRequestHandler
               when 'random'  then @handleRandom()
               when 'shuffle' then @handleShuffle()
               when 'vol'     then @handleVol()
-              when 'list'    then @handleList()
               when 'status'  then @handleStatus()
               when 'help'    then @handleHelp()
               when 'voteban' then @handleVoteBan()
               when 'banned'  then @handleBanned()
+              when 'list'
+                switch @auth.args[0]
+                  when 'add' then @handleAddList(@auth.args[1], @auth.args[2])
+                  when 'remove' then @handleRemoveList(@auth.args[1])
+                  when 'rename' then @handleRenameList(@auth.args[1], @auth.args[2])
+                  when undefined then @handleList()
+                  else
+                    @handlePlayPlaylist(@auth.args[0])
               else
                 #Just ignore and carry on
             response.serveJSON reply_data
@@ -120,22 +127,27 @@ Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
     else
       "Current Volume: *#{@volume.current_step}*"
 
+  handleAddList: (name, uri) ->
+    @spotify.add_playlist(name, uri)
+    "Playlist Added"
+
+  handleRemoveList: (name) ->
+    @spotify.remove_playlist(name)
+    "Playlist Removed"
+
+  handleRenameList: (old_name, new_name) ->
+    @spotify.rename_playlist(old_name, new_name)
+    "Playlist Renamed to #{new_name}"
+
+  handlePlayPlaylist: (name) ->
+    @spotify.set_playlist(name)
+    "Playing #{name}"
+
   handleList: () ->
-    if @auth.args[0]?
-      switch @auth.args[0]
-        when 'add' then status = @spotify.add_playlist @auth.args[1], @auth.args[2]
-        when 'remove' then status = @spotify.remove_playlist @auth.args[1]
-        when 'rename' then status = @spotify.rename_playlist @auth.args[1], @auth.args[2]
-        else status = @spotify.set_playlist @auth.args[0]
-      if status
-        'Ok.'
-      else
-        "I don't understand. Please consult the manual or cry for `help`."
-    else
-      res = 'Currently available playlists:'
-      for key of @spotify.playlists
-        res += "\n*#{key}* (#{@spotify.playlists[key]})"
-      res
+    res = 'Currently available playlists:'
+    for key of @spotify.playlists
+      res += "\n*#{key}* (#{@spotify.playlists[key]})"
+    res
 
   handleHelp: () ->
     response ="""
