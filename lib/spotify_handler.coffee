@@ -24,8 +24,10 @@ class SpotifyHandler
     @connect_timeout = null
     @connected = false
 
-    # "playing" in this context means actually playing music or being currently paused (but NOT stopped).
-    # This is an important distinction regarding the functionality of @spotify.player.resume().
+    # "playing" in this context means actually playing music
+    # or being currently paused (but NOT stopped).
+    # This is an important distinction regarding the
+    # functionality of @spotify.player.resume().
     @playing = false
     @paused = false
 
@@ -71,7 +73,9 @@ class SpotifyHandler
     @queue.show()
 
   # Called after we have successfully connected to Spotify.
-  # Clears the connect-timeout and grabs the default Playlist (or resumes playback if another playlist was set).
+  #
+  # Clears the connect-timeout and grabs the default Playlist
+  # (or resumes playback if another playlist was set).
   spotify_connected: ->
     @connected = true
     clearTimeout @connect_timeout
@@ -88,21 +92,13 @@ class SpotifyHandler
       @set_playlist 'default'
     return
 
-
-  # Called after the handler has lost its connection to Spotify.
-  # Attempts to re-connect every 2.5s.
   spotify_disconnected: ->
     @connected = false
     @connect_timeout = setTimeout (() => @connect), 2500
     return
 
-
-  # Called after the current playlist has been updated.
-  # Simply replaces the current playlist-instance with the new one and re-bind events.
-  # Player-internal state (number of tracks in the playlist, current index, etc.) is updated on @get_next_track().
   update_playlist: (err, playlist, tracks, position) ->
     if @state.playlist.object?
-      # Remove event handlers from the old playlist
       @state.playlist.object.off()
     @state.playlist.object = playlist
     @state.playlist.object.on
@@ -231,7 +227,8 @@ class SpotifyHandler
     # If we are already playing, simply resume
     else if @playing
       return @spotify.player.resume()
-    # Last resort: We are currently neither playing not have stopped a track. So we grab the next one.
+    # Last resort: We are currently neither playing not have stopped a track.
+    # So we grab the next one.
     else if !new_track
       new_track = @get_next_track()
 
@@ -257,9 +254,6 @@ class SpotifyHandler
         artist.name
       ).join ", "
 
-      # Some tracks aren't available in our region or Spotify has lost the rights to. Newer versions
-      # of node-spotify support the availability property on tracks, but with 0.6.0, we just need to
-      # try to play the song and skip to the next one automatically if it fails
       try
         @spotify.player.play @state.track.object
         @playing = true
@@ -270,11 +264,11 @@ class SpotifyHandler
   # restart the playlist once it has played all the way through
   get_next_track: ->
     index = if @state.shuffle
-        @_translate_shuffled_track_index(@state.track.index++ % @state.playlist.object.numTracks)
-      else if @state.random
-        @state.track.index = Math.floor(Math.random() * @state.playlist.object.numTracks)
-      else
-        @state.track.index++ % @state.playlist.object.numTracks
+      @_translate_shuffled_track_index(@state.track.index++ % @state.playlist.object.numTracks)
+    else if @state.random
+      @state.track.index = Math.floor(Math.random() * @state.playlist.object.numTracks)
+    else
+      @state.track.index++ % @state.playlist.object.numTracks
 
     @state.playlist.object.getTrack(index)
 
@@ -288,8 +282,11 @@ class SpotifyHandler
     return translatedIndex
 
   # Changes the current playlist and starts playing.
-  # Since the playlist might have loaded before we can attach our callback, the actual playlist-functionality
-  # is extracted to _set_playlist_callback which we call either directly or delayed once it has loaded.
+  #
+  # Since the playlist might have loaded before we
+  # can attach our callback, the actual playlist-functionality
+  # is extracted to _set_playlist_callback which we call
+  # either directly or delayed once it has loaded.
   set_playlist: (name) ->
     if @playlists[name]?
       playlist = @spotify.createFromLink @playlists[name]
@@ -316,9 +313,12 @@ class SpotifyHandler
     @storage.setItem 'last_playlist', name
     return
 
+  valid_spotify_playlist_url: (spotify_url) ->
+    !spotify_url? || !spotify_url.match(/spotify:user:.*:playlist:[0-9a-zA-Z]+/)
+
   # Adds a playlist to the storage and updates our internal list
   add_playlist: (name, spotify_url) ->
-    return false if !name? || !spotify_url? || !spotify_url.match(/spotify:user:.*:playlist:[0-9a-zA-Z]+/)
+    return false if !name? || @valid_spotify_playlist_url(spotify_url)
     spotify_url = @_sanitize_link spotify_url.match(/spotify:user:.*:playlist:[0-9a-zA-Z]+/g)[0]
     @playlists[name] = spotify_url
     @storage.setItem 'playlists', @playlists

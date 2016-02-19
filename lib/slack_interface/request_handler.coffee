@@ -62,6 +62,10 @@ class SlackInterfaceRequestHandler
     return response
 
   handleStatus: () ->
+    song = @spotify.state.track.name
+    artist = @spotify.state.track.artists
+    playlist = @spotify.state.playlist.name
+
     playlistOrderPhrase = if @spotify.state.shuffle
       " and it is being shuffled"
     else if @spotify.state.random
@@ -69,11 +73,18 @@ class SlackInterfaceRequestHandler
     else
       ""
     if @spotify.is_paused()
-      return "Playback is currently *paused* on a song titled *#{@spotify.state.track.name}* from *#{@spotify.state.track.artists}*.\nYour currently selected playlist is named *#{@spotify.state.playlist.name}*#{playlistOrderPhrase}. Resume playback with `play`."
+      return """
+Playback is currently *paused* on a song titled *#{song}* from *#{artist}*.
+Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
+Resume playback with `play`.
+"""
     else if !@spotify.is_playing()
-      return "Playback is currently *stopped*. You can start it again by choosing an available `list`."
+      return "Playback is currently *stopped*. You can `play` or choose a `list`."
     else
-      return "You are currently letting your ears feast on the beautiful tunes titled *#{@spotify.state.track.name}* from *#{@spotify.state.track.artists}*.\nYour currently selected playlist is named *#{@spotify.state.playlist.name}*#{playlistOrderPhrase}."
+      return """
+You are currently letting your ears feast on the beautiful tunes titled *#{song}* from *#{artist}*.
+Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
+"""
 
   handleMute: () ->
     @volume.set 0
@@ -127,7 +138,34 @@ class SlackInterfaceRequestHandler
       res
 
   handleHelp: () ->
-    "You seem lost. Here is a list of commands that are available to you:   \n   \n*Commands*\n> `play [Spotify URI]` - Starts/resumes playback if no URI is provided. If a URI is given, immediately switches to the linked track.\n> `pause` - Pauses playback at the current time.\n> `stop` - Stops playback and resets to the beginning of the current track.\n> `skip` - Skips (or shuffles) to the next track in the playlist.\n> `shuffle` - Toggles shuffle on or off.\n> `vol [up|down|0..10]` Turns the volume either up/down one notch or directly to a step between `0` (mute) and `10` (full blast). Also goes to `11`.\n> `mute` - Same as `vol 0`.\n> `unmute` - Same as `vol 0`.\n> `status` - Shows the currently playing song, playlist and whether you're shuffling or not.\n> `voteban` - Cast a vote to have the current track banned \n> `banned` - See tracks that are currently banned \n> `help` - Shows a list of commands with a short explanation.\n \n *Queue* \n \n> `queue [Spotify URI]` - Add a song to the queue\n> `queue` - See the tracks currently in the queue \n  \n*Playlists*\n> `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.\n> `list remove <name>` - Removes the specified list.\n> `list rename <old name> <new name>` - Renames the specified list.\n> `list <name>` - Selects the specified list and starts playback."
+    response ="""
+You seem lost. Here is a list of commands that are available to you:
+*Commands*
+> `play [Spotify URI]` - Starts/resumes playback
+> `play [Spotify URI]` - Immediately switches to the linked track.
+> `pause` - Pauses playback at the current time.
+> `stop` - Stops playback and resets to the beginning of the current track.
+> `skip` - Skips (or shuffles) to the next track in the playlist.
+> `shuffle` - Toggles shuffle on or off.
+> `vol [up|down]` Turns the volume either up/down one notch.
+> `vol [0..10]` Adjust volume directory to a step between `0` and `10`.
+> `mute` - Same as `vol 0`.
+> `unmute` - Same as `vol 0`.
+> `status` - Shows the currently playing song, playlist and whether you're shuffling or not.
+> `voteban` - Cast a vote to have the current track banned
+> `banned` - See tracks that are currently banned
+> `help` - Shows a list of commands with a short explanation.
+
+*Queue*
+> `queue [Spotify URI]` - Add a song to the queue
+> `queue` - See the tracks currently in the queue
+
+*Playlists*
+> `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.
+> `list remove <name>` - Removes the specified list.
+> `list rename <old name> <new name>` - Renames the specified list.
+> `list <name>` - Selects the specified list and starts playback.
+"""
 
   handleVoteBan: () ->
     if status = @spotify.banCurrentSong(@auth.user)
