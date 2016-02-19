@@ -1,8 +1,11 @@
+PlaylistHandler = require('./playlistHandler')
+
 class SlackInterfaceRequestHandler
   constructor: (auth, spotify, volume) ->
     @auth = auth
     @spotify = spotify
     @volume = volume
+    @playlistHandler = new PlaylistHandler(@spotify)
 
     @endpoints =
       handle:
@@ -31,12 +34,12 @@ class SlackInterfaceRequestHandler
               when 'banned'  then @handleBanned()
               when 'list'
                 switch @auth.args[0]
-                  when 'add' then @handleAddList(@auth.args[1], @auth.args[2])
-                  when 'remove' then @handleRemoveList(@auth.args[1])
-                  when 'rename' then @handleRenameList(@auth.args[1], @auth.args[2])
-                  when undefined then @handleList()
+                  when 'add' then @playlistHandler.handleAddList(@auth.args[1], @auth.args[2])
+                  when 'remove' then @playlistHandler.handleRemoveList(@auth.args[1])
+                  when 'rename' then @playlistHandler.handleRenameList(@auth.args[1], @auth.args[2])
+                  when undefined then @playlistHandler.handleList()
                   else
-                    @handlePlayPlaylist(@auth.args[0])
+                    @playlistHandler.handlePlayPlaylist(@auth.args[0])
               else
                 #Just ignore and carry on
             response.serveJSON reply_data
@@ -126,28 +129,6 @@ Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
         else @volume.set @auth.args[0]
     else
       "Current Volume: *#{@volume.current_step}*"
-
-  handleAddList: (name, uri) ->
-    @spotify.add_playlist(name, uri)
-    "Playlist Added"
-
-  handleRemoveList: (name) ->
-    @spotify.remove_playlist(name)
-    "Playlist Removed"
-
-  handleRenameList: (old_name, new_name) ->
-    @spotify.rename_playlist(old_name, new_name)
-    "Playlist Renamed to #{new_name}"
-
-  handlePlayPlaylist: (name) ->
-    @spotify.set_playlist(name)
-    "Playing #{name}"
-
-  handleList: () ->
-    res = 'Currently available playlists:'
-    for key of @spotify.playlists
-      res += "\n*#{key}* (#{@spotify.playlists[key]})"
-    res
 
   handleHelp: () ->
     response ="""
