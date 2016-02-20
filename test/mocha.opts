@@ -1,1 +1,3 @@
 --compilers mocha --compilers coffee:coffee-script/register
+--recursive
+--require ./test/mochaHelper.coffee

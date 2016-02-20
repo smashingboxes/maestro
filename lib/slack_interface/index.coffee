@@ -6,7 +6,7 @@ module.exports = () ->
 
   # Path to Spotify's AppKey
   root_dir = path.dirname require.main.filename
-  appkey_path = path.resolve root_dir, 'spotify_appkey.key'
+  appkey_path = path.resolve __dirname + "../../../", 'spotify_appkey.key'
 
   # libspotify-bindings for node
   if os.arch() == 'arm'
