@@ -8,23 +8,16 @@ module.exports = () ->
   root_dir = path.dirname require.main.filename
   appkey_path = path.resolve __dirname + "../../../", 'spotify_appkey.key'
 
-  # libspotify-bindings for node
-  if os.arch() == 'arm'
-    Spotify = require "../spotify/pi/spotify"
-  else
-    Spotify = require "../spotify/mac/spotify"
+  Spotify = require "../spotify/mac/spotify"
 
-  # TODO
-  # Request authentication.
-  # I'd love to use a "proper" ApiServer-middleware,
-  # but we need the request's body to do this, which
-  # requires us to resume() the request and wait for
-  # a callback, which is impractical in a middleware.
+  store = require 'node-persist'
+
   AuthHandler = require('../auth_handler')(Config.auth)
   VolumeHandler = require('../volume_handler')()
   SpotifyHandler = require('../spotify_handler')({
+    test: "Junk 2",
     spotify: Spotify { appkeyFile: appkey_path  }
-    storage: require 'node-persist'
+    storage: store.initSync(),
     config: Config.spotify
   })
 

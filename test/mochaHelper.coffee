@@ -1,10 +1,19 @@
-Spotify = require('../lib/spotify/mac/nodespotify')
+Spotify = require '../lib/spotify/mac/nodespotify'
+Config = require '../config.json'
+Spotify = require "../lib/spotify/mac/spotify"
+sinon = require 'sinon'
+path = require 'path'
+store = require 'node-persist'
 
-path = require('path')
 appkey_path = path.resolve __dirname + "../../", 'spotify_appkey.key'
 
-spotify = Spotify { appkeyFile: appkey_path  }
+SpotifyHandler = require("../lib/spotify_handler")({
+  test: "Trash",
+  storage: store,
+  config: Config.spotify
+  spotify: Spotify({ appkeyFile: appkey_path  }),
+})
 
 module.exports = {
-  spotify
+  SpotifyHandler
 }
