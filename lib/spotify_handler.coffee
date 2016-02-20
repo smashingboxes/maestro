@@ -6,9 +6,7 @@ class SpotifyHandler
     @spotify = options.spotify
     @config = options.config
     @storage = options.storage
-    @storage.initSync()
     @queue = new Queue()
-
 
     @queued_song_playing = false
 

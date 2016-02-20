@@ -9,6 +9,6 @@ describe 'PlaylistHandler', ->
     before () ->
       sinon.stub(mocha_helper.SpotifyHandler, 'add_playlist')
 
-    it 'works', ->
+    it 'responds', ->
       handler = new PlaylistHandler(mocha_helper.SpotifyHandler)
       expect(handler.handleAddList('name', 'uri')).to.eq "Playlist Added"

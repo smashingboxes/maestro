@@ -11,14 +11,14 @@ module.exports = () ->
   Spotify = require "../spotify/mac/spotify"
 
   store = require 'node-persist'
+  store.initSync()
 
   AuthHandler = require('../auth_handler')(Config.auth)
   VolumeHandler = require('../volume_handler')()
   SpotifyHandler = require('../spotify_handler')({
-    test: "Junk 2",
-    spotify: Spotify { appkeyFile: appkey_path  }
-    storage: store.initSync(),
-    config: Config.spotify
+    storage: store,
+    config: Config.spotify,
+    spotify: Spotify({ appkeyFile: appkey_path  })
   })
 
   nightlyReset = new CronJob
