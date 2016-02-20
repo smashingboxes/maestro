@@ -3,6 +3,7 @@
   "version": "1.1.0",
   "description": "The crispymtn music player for your local office.",
   "homepage": "http://maestromakesyou.dance",
+  "repository": "git@github.com:smashingboxes/maestro.git",
   "main": "index.coffee",
   "author": "Brandon Mathis",
   "license": "MIT",
