@@ -1,16 +1,19 @@
 {
-  "name": "crispyfi",
+  "name": "maestro",
   "version": "1.1.0",
   "description": "The crispymtn music player for your local office.",
-  "homepage": "https://github.com/crispymtn/jukebox",
-  "main": "index.js",
-  "author": "Dieter Koch (dk@crispymtn.com)",
+  "homepage": "http://maestromakesyou.dance",
+  "main": "index.coffee",
+  "author": "Brandon Mathis",
   "license": "MIT",
   "dependencies": {
     "apiserver": "^0.3.1",
+    "chai": "^3.5.0",
     "coffee-script": "^1.8.0",
-    "lodash": "^3.10.1",
     "cron": "^1.0.9",
-    "node-persist": "0.0.2"
+    "lodash": "^3.10.1",
+    "mocha": "^2.4.5",
+    "node-persist": "0.0.2",
+    "sinon": "^1.17.3"
   }
 }
