@@ -8,7 +8,7 @@
   "author": "Brandon Mathis",
   "license": "MIT",
   "scripts": {
-    "test": "coffeelint . && istanbul cover _mocha",
+    "test": "coffeelint . && mocha",
     "start": "nodemon index.coffee"
   },
   "dependencies": {
