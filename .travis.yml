@@ -3,6 +3,10 @@ language: node_js
 node_js:
   - "0.10.38"
 
+apt:
+  packages:
+    - python-spotify
+
 before_script:
   - cp config.example.json config.json
   - npm install -g coffeelint
