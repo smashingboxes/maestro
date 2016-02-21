@@ -1,11 +1,11 @@
 {
   "spotify": {
-    "username": "1210327322",
-    "password": "heb6tho4sChev4yab"
+    "username": "spotify_account_username",
+    "password": "device_password"
   },
   "auth": {
     "tokens": [
-      "s07OlGbMCqGbXGpQLIFxVv7R"
+      "slack_token"
     ]
   }
 }

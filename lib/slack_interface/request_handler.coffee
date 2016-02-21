@@ -1,4 +1,5 @@
 PlaylistHandler = require('./playlistHandler')
+TrackHandler = require('./trackHandler')
 
 class SlackInterfaceRequestHandler
   constructor: (auth, spotify, volume) ->
