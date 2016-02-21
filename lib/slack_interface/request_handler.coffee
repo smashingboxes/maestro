@@ -23,10 +23,10 @@ class SlackInterfaceRequestHandler
             reply_data['text'] = switch @auth.command.toLowerCase()
               when 'pause'   then @trackHandler.handlePause()
               when 'stop'    then @trackHandler.handleStop()
-              when 'skip'    then @handleSkip()
+              when 'skip'    then @trackHandler.handleSkip(@auth.user_name)
+              when 'play'    then @handlePlay(@auth.args[0])
               when 'mute'    then @handleMute()
               when 'queue'   then @handleQueue()
-              when 'play'    then @handlePlay()
               when 'random'  then @handleRandom()
               when 'shuffle' then @handleShuffle()
               when 'vol'     then @handleVol()
@@ -90,14 +90,6 @@ Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
 
   handleMute: () ->
     @volume.set 0
-
-  handlePlay: () ->
-    if @auth.args[0]? && @spotify.queue.length() > 0
-      reply_data['text'] = "Please use the queue."
-    else if @auth.args[0]?
-      @spotify.play @auth.args[0]
-    else
-      @spotify.play()
 
   handleRandom: () ->
     @spotify.toggle_random()

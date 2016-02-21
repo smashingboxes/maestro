@@ -1,6 +1,7 @@
 expect = require('chai').expect
 stub = require('sinon').stub
 TrackHandler = require('../../../lib/slack_interface/trackHandler')
+Queue = require('../../../lib/queue')
 { SpotifyHandler } = require('../../mochaHelper')
 
 describe 'TrackHandler', ->
@@ -76,6 +77,30 @@ describe 'TrackHandler', ->
 
         after ->
           @get_next_track.restore()
+
+  describe '#play', ->
+    context 'when no track uri is provided', ->
+      it 'will start playing music', ->
+        @handler.handlePlay()
+        expect(@play.calledOnce).to.be.true
+
+    context 'when a track uri is provided', ->
+      it 'will start playing that track', ->
+        @handler.handlePlay('track_uri')
+        [uri] = @play.firstCall.args
+        expect(uri).to.eq 'track_uri'
+
+    context 'when there is a queue', ->
+      before ->
+        queue = new Queue
+        queue.push 'next_queue_track_uri'
+        SpotifyHandler.queue = queue
+
+      it 'will ask you to use the queue', ->
+        expect(@handler.handlePlay('uri')).to.eq 'Please use the queue.'
+
+      after ->
+        SpotifyHandler.queue = []
 
   afterEach ->
     @pause.reset()

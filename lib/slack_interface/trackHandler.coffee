@@ -11,4 +11,12 @@ class TrackHandler extends BaseHandler
     message = @spotify.skip(requestor)
     message if typeof(message) == 'string'
 
+  handlePlay: (uri) ->
+    if uri? && @spotify.queue.length() > 0
+      "Please use the queue."
+    else if uri?
+      @spotify.play uri
+    else
+      @spotify.play()
+
 module.exports = TrackHandler

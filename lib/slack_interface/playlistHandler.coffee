@@ -1,7 +1,4 @@
-class PlaylistHandler
-  constructor: (spotify) ->
-    @spotify = spotify
-
+class PlaylistHandler extends BaseHandler
   handleAddList: (name, uri) ->
     @spotify.add_playlist(name, uri)
     "Playlist Added"
