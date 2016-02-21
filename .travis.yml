@@ -3,8 +3,14 @@ language: node_js
 node_js:
   - "0.10.38"
 
+addons:
+  apt:
+    sources:
+      - https://apt.mopidy.com/wheezy.list
+    package:
+      - python-spotify
+
 before_script:
-  - sudo apt-get install python-spotify
   - cp config.example.json config.json
   - npm install -g coffeelint
 
