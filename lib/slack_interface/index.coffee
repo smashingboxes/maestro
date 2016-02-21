@@ -1,14 +1,13 @@
 module.exports = () ->
   Config = require '../../config.json'
   CronJob = require('cron').CronJob
-  os = require 'os'
   path = require 'path'
 
   # Path to Spotify's AppKey
   root_dir = path.dirname require.main.filename
   appkey_path = path.resolve __dirname + "../../../", 'spotify_appkey.key'
 
-  Spotify = require "../spotify/mac/spotify"
+  Spotify = require "../spotify"
 
   store = require 'node-persist'
   store.initSync()

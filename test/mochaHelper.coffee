@@ -1,8 +1,5 @@
 Config = require '../config.json'
-if process.env.NODE_ENV == 'travis'
-  Spotify = require "../lib/spotify/travis/spotify"
-else
-  Spotify = require "../lib/spotify/mac/spotify"
+Spotify = require "../lib/spotify"
 
 sinon = require 'sinon'
 path = require 'path'
