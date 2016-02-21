@@ -59,7 +59,8 @@ describe 'TrackHandler', ->
 
       context 'when there are enought voteskips to skip', ->
         before ->
-          @get_next_track = stub(SpotifyHandler, 'get_next_track', -> return 'spotify:track:7ueP5u2qkdZbIPN2YA6LR0')
+          track = 'spotify:track:7ueP5u2qkdZbIPN2YA6LR0'
+          @get_next_track = stub(SpotifyHandler, 'get_next_track', -> track)
 
         beforeEach ->
           @handler.handleSkip('one')

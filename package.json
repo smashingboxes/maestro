@@ -7,6 +7,9 @@
   "main": "index.coffee",
   "author": "Brandon Mathis",
   "license": "MIT",
+  "scripts": {
+    "test": "coffeelint . && mocha"
+  },
   "dependencies": {
     "apiserver": "^0.3.1",
     "chai": "^3.5.0",

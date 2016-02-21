@@ -20,5 +20,4 @@ before_script:
   - npm install -g coffeelint
 
 script:
-  - mocha
-  - coffeelint .
+  - npm test
