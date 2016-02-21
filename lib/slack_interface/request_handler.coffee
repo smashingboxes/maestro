@@ -21,8 +21,8 @@ class SlackInterfaceRequestHandler
             return if @auth.user_name == 'slackbot'
 
             reply_data['text'] = switch @auth.command.toLowerCase()
-              when 'pause'   then @handlePause()
-              when 'stop'    then @handleStop()
+              when 'pause'   then @trackHandler.handlePause()
+              when 'stop'    then @trackHandler.handleStop()
               when 'skip'    then @handleSkip()
               when 'mute'    then @handleMute()
               when 'queue'   then @handleQueue()
@@ -47,16 +47,6 @@ class SlackInterfaceRequestHandler
             response.serveJSON reply_data
             return
           return
-
-  handlePause: () ->
-    @spotify.pause()
-
-  handleStop: () ->
-    @spotify.stop()
-
-  handleSkip: () ->
-    message = @spotify.skip(@auth.user_name)
-    message if typeof(message) == 'string'
 
   handleQueue: () ->
     response = ''
