@@ -2,5 +2,5 @@ language: node_js
 node_js:
   - "0.10.38"
 script:
-  - mocha
+  - mocha NODE_ENV=travis
   - coffeelint

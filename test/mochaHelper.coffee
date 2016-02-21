@@ -1,6 +1,8 @@
-Spotify = require '../lib/spotify/mac/nodespotify'
 Config = require '../config.json'
-Spotify = require "../lib/spotify/mac/spotify"
+if process.env.NODE_ENV = 'travis'
+  Spotify = require "../lib/spotify/travis/spotify"
+else
+  Spotify = require "../lib/spotify/mac/spotify"
 sinon = require 'sinon'
 path = require 'path'
 store = require 'node-persist'
