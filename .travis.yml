@@ -11,6 +11,7 @@ before_script:
   - cd libspotify-12.1.51-Linux-x86_64-release
   - sudo make install prefix=/usr/local
   - sudo ldconfig
+  - cd ..
   - cp config.example.json config.json
   - npm install -g coffeelint
 
