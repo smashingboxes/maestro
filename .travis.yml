@@ -5,6 +5,7 @@ node_js:
 
 before_script:
   - cp config.example.json config.json
+  - npm install -g coffeelint
 
 script:
   - mocha NODE_ENV=travis
