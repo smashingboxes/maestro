@@ -1,3 +1,5 @@
+BaseHandler = require('./baseHandler')
+
 class PlaylistHandler extends BaseHandler
   handleAddList: (name, uri) ->
     @spotify.add_playlist(name, uri)
