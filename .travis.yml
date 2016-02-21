@@ -3,14 +3,14 @@ language: node_js
 node_js:
   - "0.10.38"
 
-addons:
-  apt:
-    sources:
-      - https://apt.mopidy.com/wheezy.list
-    package:
-      - python-spotify
+sudo: true
 
 before_script:
+  - wget http://developer.spotify.com/download/libspotify/libspotify-0.0.8-linux6-x86_64.tar.gz
+  - tar zxfv libspotify-0.0.8-linux6-x86_64.tar.gz
+  - cd libspotify-0.0.8-linux6-x86_64/
+  - sudo make install prefix=/usr/local
+  - sudo ldconfig
   - cp config.example.json config.json
   - npm install -g coffeelint
 
