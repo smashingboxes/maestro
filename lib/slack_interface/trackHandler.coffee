@@ -26,8 +26,6 @@ class TrackHandler extends BaseHandler
 
     playlistOrderPhrase = if @spotify.state.shuffle
       " and it is being shuffled"
-    else if @spotify.state.random
-      " and tracks are being chosen at random"
     else
       ""
     if @spotify.is_paused()

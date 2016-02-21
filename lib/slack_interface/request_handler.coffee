@@ -28,7 +28,6 @@ class SlackInterfaceRequestHandler
               when 'status'  then @trackHandler.handleStatus()
               when 'mute'    then @handleMute()
               when 'queue'   then @handleQueue()
-              when 'random'  then @handleRandom()
               when 'shuffle' then @handleShuffle()
               when 'vol'     then @handleVol()
               when 'help'    then @handleHelp()
@@ -65,13 +64,6 @@ class SlackInterfaceRequestHandler
 
   handleMute: () ->
     @volume.set 0
-
-  handleRandom: () ->
-    @spotify.toggle_random()
-    if @spotify.state.random
-      "CHAOS"
-    else
-      "Don't be a square."
 
   handleShuffle: () ->
     @spotify.toggle_shuffle()

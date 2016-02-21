@@ -31,7 +31,6 @@ class SpotifyHandler
     @paused = false
 
     @state = {
-      random: false
       shuffle: true
       track:
         object: null
@@ -177,32 +176,15 @@ class SpotifyHandler
       @voteskips = []
       return "skip vote passed (#{requested_skips.length}/#{3}) [#{requested_skips}]"
 
-  # Toggles random on and off. MAGIC!
-  toggle_random: ->
-    @state.random = !@state.random
-
-    # We don't want to simultaneously be running shuffle
-    # and random, so turn off shuffle if random is active
-    @state.shuffle = false if @state.random
-
   toggle_shuffle: ->
     @state.shuffle = !@state.shuffle
     @state.track.index = 0
 
-    if @state.shuffle
-      # We don't want to simultaneously be running random
-      # and shuffle, so turn off random is shuffle is active
-      @state.random = false
-      @_shuffle_playlist(@state.playlist.object)
-
-
   is_playing: ->
     return @playing
 
-
   is_paused: ->
     return @paused
-
 
   # Either starts the current track (or next one, if none is set) or immediately
   # plays the provided track or link.
@@ -264,8 +246,6 @@ class SpotifyHandler
   get_next_track: ->
     index = if @state.shuffle
       @_translate_shuffled_track_index(@state.track.index++ % @state.playlist.object.numTracks)
-    else if @state.random
-      @state.track.index = Math.floor(Math.random() * @state.playlist.object.numTracks)
     else
       @state.track.index++ % @state.playlist.object.numTracks
 
