@@ -6,13 +6,15 @@ node_js:
 env:
   - NODE_ENV=travis
 
+sudo: true
+
 before_script:
   - openssl aes-256-cbc -K $encrypted_6fbba9547f2a_key -iv $encrypted_6fbba9547f2a_iv -in test/spotify_appkey.key.enc -out spotify_appkey.key -d
   - wget https://developer.spotify.com/download/libspotify/libspotify-12.1.51-Linux-x86_64-release.tar.gz
   - tar zxfv libspotify-12.1.51-Linux-x86_64-release.tar.gz
   - cd libspotify-12.1.51-Linux-x86_64-release
-  - make install prefix=/usr/local
-  - ldconfig
+  - sudo make install prefix=/usr/local
+  - sudo ldconfig
   - cd ..
   - cp config.example.json config.json
   - npm install -g coffeelint
