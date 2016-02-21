@@ -1,6 +1,11 @@
 language: node_js
+
 node_js:
   - "0.10.38"
+
+before_script:
+  - cp config.example.json config.json
+
 script:
   - mocha NODE_ENV=travis
-  - coffeelint
+  - coffeelint .
