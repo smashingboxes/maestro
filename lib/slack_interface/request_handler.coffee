@@ -5,7 +5,8 @@ class SlackInterfaceRequestHandler
     @auth = auth
     @spotify = spotify
     @volume = volume
-    @playlistHandler = new PlaylistHandler(@spotify)
+    @playlistHandler = new PlaylistHandler(spotify)
+    @trackHandler = new TrackHandler(spotify)
 
     @endpoints =
       handle:
