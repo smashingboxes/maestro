@@ -4,3 +4,4 @@ node_modules/*
 persist/*
 *.key
 config.json
+coverage

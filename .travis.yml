@@ -21,3 +21,4 @@ before_script:
 
 script:
   - npm test
+  - CODECLIMATE_REPO_TOKEN=fa6fa53b0bcadd108d8f5a1cc861d5774fe479218a7d714a66d1369082aecc1d codeclimate-test-reporter < coverage/lcov.info
