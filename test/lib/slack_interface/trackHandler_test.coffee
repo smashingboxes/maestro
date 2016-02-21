@@ -102,6 +102,87 @@ describe 'TrackHandler', ->
       after ->
         SpotifyHandler.queue = []
 
+  describe '#handleStatus', ->
+    beforeEach ->
+      SpotifyHandler.state =
+        track:
+          name: 'great song'
+          artist: 'brandon mathis'
+        playlist:
+          name: 'great playlist'
+
+    context 'when playback is stopped', ->
+      before ->
+        @is_playing = stub(SpotifyHandler, 'is_playing', () -> false)
+
+      it 'will tell you if playback is stopped', ->
+        expect(@handler.handleStatus()).to.match /stopped/
+
+      afterEach ->
+        @is_playing.reset()
+
+      after ->
+        @is_playing.restore()
+
+    context 'when playback is paused', ->
+      before ->
+        @is_paused = stub(SpotifyHandler, 'is_paused', () -> true)
+        @initial_state = SpotifyHandler.state
+
+      it 'will tell you that playback is paused', ->
+        expect(@handler.handleStatus()).to.match /\*paused\* on a song titled/
+
+      it 'will tell you what track it is paused on', ->
+        expect(@handler.handleStatus()).to.match /great song/
+
+      afterEach ->
+        @is_paused.reset()
+
+      after ->
+        @is_paused.restore()
+
+    context 'when playing', ->
+      before ->
+        @is_playing = stub(SpotifyHandler, 'is_playing', () -> true)
+
+      it 'will tell you what track is currently active', ->
+        expect(@handler.handleStatus()).to.match /beautiful tunes titled \*great song\*/
+
+      afterEach ->
+        @is_playing.reset()
+
+      after ->
+        @is_playing.restore()
+
+      context 'when playback is shuffled', ->
+        beforeEach ->
+          SpotifyHandler.state =
+            shuffle: true
+            track:
+              name: 'great song'
+              artist: 'brandon mathis'
+            playlist:
+              name: 'great playlist'
+
+        it 'will tell you that playback is being shuffled', () ->
+          expect(@handler.handleStatus()).to.match /shuffled/
+
+      context 'when playback is not being shuffled', ->
+        beforeEach ->
+          SpotifyHandler.state =
+            shuffle: false
+            track:
+              name: 'great song'
+              artist: 'brandon mathis'
+            playlist:
+              name: 'great playlist'
+
+        it 'will not say that playback is being shuffled', ->
+          expect(@handler.handleStatus()).to.not.match /shuffled/
+
+    afterEach ->
+      SpotifyHandler.state = @initial_state
+
   afterEach ->
     @pause.reset()
     @stop.reset()

@@ -24,13 +24,13 @@ class SlackInterfaceRequestHandler
               when 'pause'   then @trackHandler.handlePause()
               when 'stop'    then @trackHandler.handleStop()
               when 'skip'    then @trackHandler.handleSkip(@auth.user_name)
-              when 'play'    then @handlePlay(@auth.args[0])
+              when 'play'    then @trackHandler.handlePlay(@auth.args[0])
+              when 'status'  then @trackHandler.handleStatus()
               when 'mute'    then @handleMute()
               when 'queue'   then @handleQueue()
               when 'random'  then @handleRandom()
               when 'shuffle' then @handleShuffle()
               when 'vol'     then @handleVol()
-              when 'status'  then @handleStatus()
               when 'help'    then @handleHelp()
               when 'voteban' then @handleVoteBan()
               when 'banned'  then @handleBanned()
@@ -62,31 +62,6 @@ class SlackInterfaceRequestHandler
         response += "[#{track.album.name}]\n"
       )
     return response
-
-  handleStatus: () ->
-    song = @spotify.state.track.name
-    artist = @spotify.state.track.artists
-    playlist = @spotify.state.playlist.name
-
-    playlistOrderPhrase = if @spotify.state.shuffle
-      " and it is being shuffled"
-    else if @spotify.state.random
-      " and tracks are being chosen at random"
-    else
-      ""
-    if @spotify.is_paused()
-      return """
-Playback is currently *paused* on a song titled *#{song}* from *#{artist}*.
-Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
-Resume playback with `play`.
-"""
-    else if !@spotify.is_playing()
-      return "Playback is currently *stopped*. You can `play` or choose a `list`."
-    else
-      return """
-You are currently letting your ears feast on the beautiful tunes titled *#{song}* from *#{artist}*.
-Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
-"""
 
   handleMute: () ->
     @volume.set 0

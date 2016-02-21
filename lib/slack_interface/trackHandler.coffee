@@ -19,4 +19,29 @@ class TrackHandler extends BaseHandler
     else
       @spotify.play()
 
+  handleStatus: () ->
+    song = @spotify.state.track.name
+    artist = @spotify.state.track.artists
+    playlist = @spotify.state.playlist.name
+
+    playlistOrderPhrase = if @spotify.state.shuffle
+      " and it is being shuffled"
+    else if @spotify.state.random
+      " and tracks are being chosen at random"
+    else
+      ""
+    if @spotify.is_paused()
+      return """
+Playback is currently *paused* on a song titled *#{song}* from *#{artist}*.
+Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
+Resume playback with `play`.
+"""
+    else if !@spotify.is_playing()
+      return "Playback is currently *stopped*. You can `play` or choose a `list`."
+    else
+      return """
+You are currently letting your ears feast on the beautiful tunes titled *#{song}* from *#{artist}*.
+Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
+"""
+
 module.exports = TrackHandler
