@@ -259,7 +259,8 @@ describe 'TrackHandler', ->
         expect(SpotifyHandler.state.shuffle).to.be.false
 
       it 'responds with shuffle status', ->
-        expect(@handler.handleShuffle()).to.eq "I am no longer shuffling. Thanks for ruining my fun."
+        expectedMessage = "I am no longer shuffling. Thanks for ruining my fun."
+        expect(@handler.handleShuffle()).to.eq expectedMessage
 
       afterEach ->
         SpotifyHandler.state = {}
