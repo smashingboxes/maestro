@@ -92,7 +92,7 @@ describe 'TrackHandler', ->
         expect(uri).to.eq 'track_uri'
 
     context 'when there is a queue', ->
-      before ->
+      beforeEach ->
         queue = new Queue
         queue.push 'next_queue_track_uri'
         SpotifyHandler.queue = queue
@@ -100,8 +100,9 @@ describe 'TrackHandler', ->
       it 'will ask you to use the queue', ->
         expect(@handler.handlePlay('uri')).to.eq 'Please use the queue.'
 
-      after ->
-        SpotifyHandler.queue = []
+      afterEach ->
+        SpotifyHandler.queue = undefined
+        queue = undefined
 
   describe '#handleStatus', ->
     beforeEach ->
@@ -183,6 +184,49 @@ describe 'TrackHandler', ->
 
     afterEach ->
       SpotifyHandler.state = @initial_state
+
+  describe '#handleQueue', ->
+    context 'with no args', ->
+      beforeEach ->
+        queue = new Queue()
+        queue.push({
+          link: 'foo',
+          name: 'foo',
+          album: { name: 'foo' },
+          artists: [{ name: 'foo' }]
+        })
+        queue.push({
+          link: 'bar',
+          name: 'bar',
+          album: { name: 'bar' },
+          artists: [{ name: 'bar' }]
+        })
+        SpotifyHandler.queue = queue
+
+      it 'will respond with currently queued tracks', ->
+        expect(@handler.handleQueue()).to.match /Queued Tracks/
+        expect(@handler.handleQueue()).to.match /foo/
+        expect(@handler.handleQueue()).to.match /bar/
+
+      afterEach ->
+        SpotifyHandler.queue = undefined
+
+    context 'with a track uri', ->
+      before ->
+        @pushQueue = stub(SpotifyHandler, 'pushQueue')
+
+      it 'will respond with OK', ->
+        expect(@handler.handleQueue('foo')).to.eq 'OK'
+        [ uri ] = @pushQueue.firstCall.args
+        expect(uri).to.eq 'foo'
+        expect(@pushQueue.calledOnce).to.be.true
+
+      after ->
+        @pushQueue.restore()
+
+      afterEach ->
+        @pushQueue.reset()
+
 
   afterEach ->
     @pause.reset()

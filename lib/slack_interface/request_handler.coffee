@@ -26,8 +26,8 @@ class SlackInterfaceRequestHandler
               when 'skip'    then @trackHandler.handleSkip(@auth.user_name)
               when 'play'    then @trackHandler.handlePlay(@auth.args[0])
               when 'status'  then @trackHandler.handleStatus()
+              when 'queue'   then @trackHandler.handleQueue(@auth.args[0])
               when 'mute'    then @handleMute()
-              when 'queue'   then @handleQueue()
               when 'shuffle' then @handleShuffle()
               when 'vol'     then @handleVol()
               when 'help'    then @handleHelp()
@@ -46,21 +46,6 @@ class SlackInterfaceRequestHandler
             response.serveJSON reply_data
             return
           return
-
-  handleQueue: () ->
-    response = ''
-    if @auth.args[0]?
-      @spotify.pushQueue(@auth.args[0])
-      response = "OK"
-    else
-      queued_tracks = @spotify.showQueue()
-      response = ":musical_note: Queued Tracks :musical_note:\n"
-      queued_tracks.forEach( (track, index) ->
-        response += "#{index + 1}. #{track.name}"
-        response += "*#{track.artists[0].name}*"
-        response += "[#{track.album.name}]\n"
-      )
-    return response
 
   handleMute: () ->
     @volume.set 0

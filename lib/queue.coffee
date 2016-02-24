@@ -1,5 +1,6 @@
 class Queue
-  data: [ ]
+  constructor: () ->
+    @data = []
 
   show: ->
     @data

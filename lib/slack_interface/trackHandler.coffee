@@ -42,4 +42,17 @@ You are currently letting your ears feast on the beautiful tunes titled *#{song}
 Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
 """
 
+  handleQueue: (uri) ->
+    if uri != undefined
+      @spotify.pushQueue(uri)
+      'OK'
+    else
+      queued_tracks = @spotify.showQueue()
+      response = ":musical_note: Queued Tracks :musical_note:\n"
+      queued_tracks.forEach( (track, index) ->
+        response += "#{index + 1}. #{track.name}"
+        response += "*#{track.artists[0].name}*"
+        response += "[#{track.album.name}]\n"
+      )
+      response
 module.exports = TrackHandler
