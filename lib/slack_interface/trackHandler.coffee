@@ -55,4 +55,12 @@ Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
         response += "[#{track.album.name}]\n"
       )
       response
+
+  handleShuffle: () ->
+    @spotify.toggle_shuffle()
+    if @spotify.state.shuffle
+      "ERRYDAY I'M SHUFFLING."
+    else
+      "I am no longer shuffling. Thanks for ruining my fun."
+
 module.exports = TrackHandler

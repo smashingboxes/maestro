@@ -227,6 +227,42 @@ describe 'TrackHandler', ->
       afterEach ->
         @pushQueue.reset()
 
+  describe '#handleShuffle', ->
+    context 'when toggle shuffling off', ->
+      beforeEach ->
+        SpotifyHandler.state = {
+          shuffle: false,
+          track:
+            index: undefined
+        }
+
+      it 'toggles shuffling on and off', ->
+        @handler.handleShuffle()
+        expect(SpotifyHandler.state.shuffle).to.be.true
+
+      it 'responds with shuffle status', ->
+        expect(@handler.handleShuffle()).to.eq "ERRYDAY I'M SHUFFLING."
+
+      afterEach ->
+        SpotifyHandler.state = {}
+
+    context 'when toggle shuffing on', ->
+      beforeEach ->
+        SpotifyHandler.state = {
+          shuffle: true,
+          track:
+            index: undefined
+        }
+
+      it 'toggles shuffling on and off', ->
+        @handler.handleShuffle()
+        expect(SpotifyHandler.state.shuffle).to.be.false
+
+      it 'responds with shuffle status', ->
+        expect(@handler.handleShuffle()).to.eq "I am no longer shuffling. Thanks for ruining my fun."
+
+      afterEach ->
+        SpotifyHandler.state = {}
 
   afterEach ->
     @pause.reset()

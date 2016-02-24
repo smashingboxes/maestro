@@ -27,8 +27,8 @@ class SlackInterfaceRequestHandler
               when 'play'    then @trackHandler.handlePlay(@auth.args[0])
               when 'status'  then @trackHandler.handleStatus()
               when 'queue'   then @trackHandler.handleQueue(@auth.args[0])
+              when 'shuffle' then @trackHandler.handleShuffle()
               when 'mute'    then @handleMute()
-              when 'shuffle' then @handleShuffle()
               when 'vol'     then @handleVol()
               when 'help'    then @handleHelp()
               when 'voteban' then @handleVoteBan()
@@ -49,13 +49,6 @@ class SlackInterfaceRequestHandler
 
   handleMute: () ->
     @volume.set 0
-
-  handleShuffle: () ->
-    @spotify.toggle_shuffle()
-    if @spotify.state.shuffle
-      "ERRYDAY I'M SHUFFLING."
-    else
-      "I am no longer shuffling. Thanks for ruining my fun."
 
   handleVol: () ->
     if @auth.args[0]?
