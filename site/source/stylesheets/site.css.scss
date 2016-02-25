@@ -1,0 +1,32 @@
+@import url(https://fonts.googleapis.com/css?family=Work+Sans:400,600,700);
+@charset "utf-8";
+@import "normalize";
+@import "html";
+
+$green: #24cf5f;
+$grey: #292b33;
+
+header {
+  background: $green;
+  color: white;
+  height: 400px;
+}
+
+body {
+  text-align: center;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px;
+}
+
+.bold {
+  font-weight: bold;
+}
+.powered_by {
+  font-size: 14px;
+}
+
+footer {
+  background-color: $grey;
+  color: white;
+  height: 150px;
+}
