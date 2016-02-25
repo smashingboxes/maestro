@@ -91,8 +91,8 @@ You seem lost. Here is a list of commands that are available to you:
 
   handleVoteBan: () ->
     if status = @spotify.banCurrentSong(@auth.user)
-      "#{@spotify.state.track.name} is #{status}"
       @spotify.skip() if status == 'banned'
+      "#{@spotify.state.track.name} is #{status}"
     else
       "#{@spotify.state.track.name} has *already* been banned"
 
