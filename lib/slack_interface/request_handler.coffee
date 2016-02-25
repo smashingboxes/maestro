@@ -91,10 +91,10 @@ You seem lost. Here is a list of commands that are available to you:
 
   handleVoteBan: () ->
     if status = @spotify.banCurrentSong(@auth.user)
-      reply_data['text'] = "#{@spotify.state.track.name} is #{status}"
+      "#{@spotify.state.track.name} is #{status}"
       @spotify.skip() if status == 'banned'
     else
-      reply_data['text'] = "#{@spotify.state.track.name} has *already* been banned"
+      "#{@spotify.state.track.name} has *already* been banned"
 
   handleBanned: () ->
     ":rotating_light: BANNED TRACKS :rotating_light: \n#{@spotify.bannedSongs().join("\n")}"
