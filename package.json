@@ -9,7 +9,7 @@
   "license": "MIT",
   "scripts": {
     "test": "coffeelint . && mocha",
-    "start": "nodemon index.coffee"
+    "start": "coffee index.coffee"
   },
   "dependencies": {
     "apiserver": "^0.3.1",
@@ -17,8 +17,7 @@
     "coffee-script": "^1.8.0",
     "cron": "^1.0.9",
     "lodash": "^3.10.1",
-    "node-persist": "0.0.2",
-    "nodemon": "^1.9.0"
+    "node-persist": "0.0.2"
   },
   "devDependencies": {
     "coffee-coverage": "^1.0.1",
