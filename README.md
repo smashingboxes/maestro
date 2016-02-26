@@ -24,5 +24,31 @@ Slack-Powered Spotify music bot.
 1. `npm install`
 1. `npm test`
 
+## HOWTO
+**Commands**
+> `play [Spotify URI]` - Starts/resumes playback  
+> `play [Spotify URI]` - Immediately switches to the linked track.  
+> `pause` - Pauses playback at the current time.  
+> `stop` - Stops playback and resets to the beginning of the current track.  
+> `skip` - Skips (or shuffles) to the next track in the playlist.  
+> `shuffle` - Toggles shuffle on or off.  
+> `vol [up|down]` Turns the volume either up/down one notch.  
+> `vol [0..10]` Adjust volume directory to a step between `0` and `10`.  
+> `mute` - Same as `vol 0`.  
+> `unmute` - Same as `vol 0`.  
+> `status` - Shows the currently playing song, playlist and whether you're shuffling or not.  
+> `voteban` - Cast a vote to have the current track banned  
+> `banned` - See tracks that are currently banned  
+> `help` - Shows a list of commands with a short explanation.  
+
+**Queue**
+> `queue [Spotify URI]` - Add a song to the queue  
+> `queue` - See the tracks currently in the queue  
+
+**Playlists**
+> `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.  
+> `list remove <name>` - Removes the specified list.  
+> `list rename <old name> <new name>` - Renames the specified list.  
+> `list <name>` - Selects the specified list and starts playback.  
 
 ([inspired by Crispify](https://github.com/crispymtn/crispyfi))
