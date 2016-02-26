@@ -6,6 +6,15 @@
 $green: #24cf5f;
 $grey: #292b33;
 
+.button {
+  color: $green;
+  text-decoration: none;
+  border: 2px solid $green;
+  padding: 15px 40px;
+  width: 140px;
+  display: inline-block;
+}
+
 .font-small {
   line-height: 1.2em;
   font-size: 16px;
@@ -59,17 +68,6 @@ body {
 
   .main-description-text {
     margin-bottom: 48px;
-  }
-
-  .main-description-github {
-    a {
-      color: $green;
-      text-decoration: none;
-      border: 1px solid $green;
-      padding: 15px 40px;
-      width: 140px;
-      display: inline-block;
-    }
   }
 
   .main-blocks {
