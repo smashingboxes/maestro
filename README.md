@@ -6,6 +6,9 @@ Slack-Powered Spotify music bot.
 
 ## Install
 
+:see_no_evil: **You Must Use Node 0.10.x** :see_no_evil:
+:see_no_evil: **Only Works on OSX** :see_no_evil:
+
 1. Create a Spotify Premium Account.
 1. Download a [Spotify App Developers Key](https://devaccount.spotify.com/my-account/keys/).
 1. [Download the latest release](https://github.com/smashingboxes/maestro/releases/latest).
@@ -14,6 +17,8 @@ Slack-Powered Spotify music bot.
 1. Copy the token from the webhook into the `config.json` file.
 1. Put your Spotify login infor into the `config.json` file.
 1. `npm start`.
+1. Plug your **OSX** machine into some speakers.
+1. Jam :headphones:
 
 ## Running Test
 
