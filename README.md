@@ -4,7 +4,7 @@
 # Maestro
 Slack-Powered Spotify music bot.
 
-## How to Install
+## Install
 
 1. Create a Spotify Premium Account.
 1. Download a [Spotify App Developers Key](https://devaccount.spotify.com/my-account/keys/).
