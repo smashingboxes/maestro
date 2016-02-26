@@ -24,7 +24,7 @@ Slack-Powered Spotify music bot.
 1. `npm install`
 1. `npm test`
 
-## HOWTO
+## Commands
 **Commands**
 > `play [Spotify URI]` - Starts/resumes playback  
 > `play [Spotify URI]` - Immediately switches to the linked track.  
