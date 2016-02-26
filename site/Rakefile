@@ -1,5 +1,5 @@
 task :deploy do
   system("middleman build")
-  system("cd build && git commit -am 'Deploy #{Time.now.to_s}'")
+  system("cd build && git add -A . && git commit -m 'Deploy #{Time.now.to_s}'")
   system("cd build && git push origin gh-pages")
 end
