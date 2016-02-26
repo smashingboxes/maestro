@@ -6,27 +6,126 @@
 $green: #24cf5f;
 $grey: #292b33;
 
-header {
-  background: $green;
+.font-small {
+  line-height: 1.2em;
+  font-size: 16px;
+}
+
+.font-medium {
+  line-height: 1.4em;
+  font-size: 24px;
+}
+
+.font-large {
+  line-height: 1.6em;
+  font-size: 36px;
+}
+
+.header {
   color: white;
-  height: 400px;
+  margin-bottom: 48px;
+
+  .header-content {
+    background: $green;
+    padding: 0 300px;
+    padding-top: 48px;
+    padding-bottom: 48px;
+
+    .header-logo {
+      margin-bottom: 48px;
+    }
+  }
+
+  .white {
+    height: 48px;
+    position: relative;
+    margin: 0 200px;
+
+    img {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+    }
+  }
 }
 
 body {
-  text-align: center;
   font-family: 'Work Sans', sans-serif;
-  font-size: 16px;
+}
+
+.main {
+  margin: 0 250px;
+  text-align: center;
+
+  .main-description-text {
+    margin-bottom: 48px;
+  }
+
+  .main-description-github {
+    a {
+      color: $green;
+      text-decoration: none;
+      border: 1px solid $green;
+      padding: 15px 40px;
+      width: 140px;
+      display: inline-block;
+    }
+  }
+
+  .main-blocks {
+    text-align: left;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    .main-blocks-block1 {
+      flex-basis: 100%;
+    }
+  }
+
+  .main-video-description {
+    margin-bottom: 48px;
+  }
+
+  .main-video-youtube {
+    margin-bottom: 48px;
+  }
+
+  .main-skype {
+    .main-skype-button {
+      margin-bottom: 48px;
+    }
+
+  }
+  .main-contact {
+    margin-bottom: 48px;
+
+    .main-contact-email a {
+      color: $green;
+      text-decoration: none;
+    }
+  }
+}
+
+.horizontal_rule {
+  margin-top: 48px;
+  margin-bottom: 48px;
 }
 
 .bold {
   font-weight: bold;
 }
+
 .powered_by {
   font-size: 14px;
 }
 
-footer {
+.footer {
+  text-align: center;
   background-color: $grey;
   color: white;
   height: 150px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
