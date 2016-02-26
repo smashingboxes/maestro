@@ -45,7 +45,9 @@ Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
 
   handleQueue: (uri) ->
     return "Please use a Spotify URI" if @invalid(uri)
+    console.log uri
     if uri != undefined
+      @spotify.pushQueue(uri)
       'OK'
     else
       queued_tracks = @spotify.showQueue()
