@@ -12,6 +12,7 @@ class TrackHandler extends BaseHandler
     message if typeof(message) == 'string'
 
   handlePlay: (uri) ->
+    return "Please use a Spotify URI" if @invalid(uri)
     if uri? && @spotify.queue.length() > 0
       "Please use the queue."
     else if uri?
@@ -43,8 +44,9 @@ Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
 """
 
   handleQueue: (uri) ->
+    return "Please use a Spotify URI" if @invalid(uri)
     if uri != undefined
-      @spotify.pushQueue(uri)
+      console.log @spotify.pushQueue(uri)
       'OK'
     else
       queued_tracks = @spotify.showQueue()
@@ -62,5 +64,8 @@ Your currently selected playlist is named *#{playlist}*#{playlistOrderPhrase}.
       "ERRYDAY I'M SHUFFLING."
     else
       "I am no longer shuffling. Thanks for ruining my fun."
+
+  invalid: (uri) ->
+    /http/.test(uri)
 
 module.exports = TrackHandler

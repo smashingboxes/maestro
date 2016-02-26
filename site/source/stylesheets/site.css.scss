@@ -6,126 +6,144 @@
 $green: #24cf5f;
 $grey: #292b33;
 
-.font-small {
-  line-height: 1.2em;
-  font-size: 16px;
+#basic-site {
+  display: none;
 }
 
-.font-medium {
-  line-height: 1.4em;
-  font-size: 24px;
-}
+@media only screen and (min-width : 1200px) {
+  #mobile {
+    display: none;
+  }
 
-.font-large {
-  line-height: 1.6em;
-  font-size: 36px;
-}
+  #basic-site {
+    display: block;
+  }
 
-.header {
-  color: white;
-  margin-bottom: 48px;
+  .container {
+    margin: 0 auto;
+    width: 1200px;
+  }
+  .font-small {
+    line-height: 1.2em;
+    font-size: 16px;
+  }
 
-  .header-content {
-    background: $green;
-    padding: 0 300px;
-    padding-top: 48px;
-    padding-bottom: 48px;
+  .font-medium {
+    line-height: 1.4em;
+    font-size: 24px;
+  }
 
-    .header-logo {
+  .font-large {
+    line-height: 1.6em;
+    font-size: 36px;
+  }
+
+  .header {
+    color: white;
+    margin-bottom: 48px;
+
+    .green {
+      background: $green;
+    }
+
+    .header-content {
+      padding-top: 48px;
+      padding-bottom: 48px;
+
+      .header-logo {
+        margin-bottom: 48px;
+      }
+    }
+
+    .white {
+      height: 48px;
+      position: relative;
+
+      img {
+        position: absolute;
+        right: 0;
+        bottom: 0;
+      }
+    }
+  }
+
+  body {
+    font-family: 'Work Sans', sans-serif;
+  }
+
+  .main {
+    text-align: center;
+
+    .main-description-text {
       margin-bottom: 48px;
     }
-  }
 
-  .white {
-    height: 48px;
-    position: relative;
-    margin: 0 200px;
+    .main-description-github {
+      a {
+        color: $green;
+        text-decoration: none;
+        border: 1px solid $green;
+        padding: 15px 40px;
+        width: 140px;
+        display: inline-block;
+      }
+    }
 
-    img {
-      position: absolute;
-      right: 0;
-      bottom: 0;
+    .main-blocks {
+      text-align: left;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+
+      .main-blocks-block1 {
+        flex-basis: 100%;
+      }
+    }
+
+    .main-video-description {
+      margin-bottom: 48px;
+    }
+
+    .main-video-youtube {
+      margin-bottom: 48px;
+    }
+
+    .main-skype {
+      .main-skype-button {
+        margin-bottom: 48px;
+      }
+
+    }
+    .main-contact {
+      margin-bottom: 48px;
+
+      .main-contact-email a {
+        color: $green;
+        text-decoration: none;
+      }
     }
   }
-}
 
-body {
-  font-family: 'Work Sans', sans-serif;
-}
-
-.main {
-  margin: 0 250px;
-  text-align: center;
-
-  .main-description-text {
+  .horizontal_rule {
+    margin-top: 48px;
     margin-bottom: 48px;
   }
 
-  .main-description-github {
-    a {
-      color: $green;
-      text-decoration: none;
-      border: 1px solid $green;
-      padding: 15px 40px;
-      width: 140px;
-      display: inline-block;
-    }
+  .bold {
+    font-weight: bold;
   }
 
-  .main-blocks {
-    text-align: left;
+  .powered_by {
+    font-size: 14px;
+  }
+
+  .footer {
+    text-align: center;
+    background-color: $grey;
+    color: white;
+    height: 150px;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-
-    .main-blocks-block1 {
-      flex-basis: 100%;
-    }
+    align-items: center;
   }
-
-  .main-video-description {
-    margin-bottom: 48px;
-  }
-
-  .main-video-youtube {
-    margin-bottom: 48px;
-  }
-
-  .main-skype {
-    .main-skype-button {
-      margin-bottom: 48px;
-    }
-
-  }
-  .main-contact {
-    margin-bottom: 48px;
-
-    .main-contact-email a {
-      color: $green;
-      text-decoration: none;
-    }
-  }
-}
-
-.horizontal_rule {
-  margin-top: 48px;
-  margin-bottom: 48px;
-}
-
-.bold {
-  font-weight: bold;
-}
-
-.powered_by {
-  font-size: 14px;
-}
-
-.footer {
-  text-align: center;
-  background-color: $grey;
-  color: white;
-  height: 150px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }

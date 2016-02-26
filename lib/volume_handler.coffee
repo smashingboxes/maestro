@@ -39,5 +39,5 @@ class VolumeHandler
     return 80 + (2 * step)
 
 # export things
-module.exports = (initial_volume = 3) ->
-  return new VolumeHandler(initial_volume)
+module.exports = () ->
+  new VolumeHandler(0)
