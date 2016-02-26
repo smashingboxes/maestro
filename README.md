@@ -6,7 +6,7 @@ Slack-Powered Spotify music bot.
 
 ## Install
 
-:see_no_evil: **You Must Use Node 0.10.x** :see_no_evil:
+:see_no_evil: **You Must Use Node 0.10.x** :see_no_evil:  
 :see_no_evil: **Only Works on OSX** :see_no_evil:
 
 1. Create a Spotify Premium Account.
