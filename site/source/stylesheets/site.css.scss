@@ -6,9 +6,60 @@
 $green: #24cf5f;
 $grey: #292b33;
 
+body {
+  font-family: 'Work Sans', sans-serif;
+  background-color: $green;
+}
+
 #basic-site {
   display: none;
 }
+
+.font-small {
+  line-height: 1.2em;
+  font-size: 16px;
+}
+
+.font-medium {
+  line-height: 1.4em;
+  font-size: 24px;
+}
+
+.font-large {
+  line-height: 1.6em;
+  font-size: 36px;
+}
+
+.button {
+  color: $green;
+  text-decoration: none;
+  border: 2px solid $green;
+  padding: 15px 40px;
+  width: 140px;
+  display: inline-block;
+}
+
+#mobile {
+  text-align: center;
+
+  .blurb {
+    color: white;
+  }
+
+  .logo, .robot, .main-description-github {
+    margin-bottom: 48px;
+  }
+
+  .powered-by {
+    padding-bottom: 20px;
+  }
+}
+
+.btn-white {
+  color: white;
+  border: 2px solid white;
+}
+
 
 @media only screen and (min-width : 1200px) {
   #mobile {
@@ -19,23 +70,13 @@ $grey: #292b33;
     display: block;
   }
 
+  body {
+    background-color: white;
+  }
+
   .container {
     margin: 0 auto;
     width: 1200px;
-  }
-  .font-small {
-    line-height: 1.2em;
-    font-size: 16px;
-  }
-
-  .font-medium {
-    line-height: 1.4em;
-    font-size: 24px;
-  }
-
-  .font-large {
-    line-height: 1.6em;
-    font-size: 36px;
   }
 
   .header {
@@ -67,26 +108,11 @@ $grey: #292b33;
     }
   }
 
-  body {
-    font-family: 'Work Sans', sans-serif;
-  }
-
   .main {
     text-align: center;
 
     .main-description-text {
       margin-bottom: 48px;
-    }
-
-    .main-description-github {
-      a {
-        color: $green;
-        text-decoration: none;
-        border: 1px solid $green;
-        padding: 15px 40px;
-        width: 140px;
-        display: inline-block;
-      }
     }
 
     .main-blocks {
@@ -96,7 +122,7 @@ $grey: #292b33;
       align-items: flex-start;
 
       .main-blocks-block1 {
-        flex-basis: 100%;
+        flex-basis: 30%;
       }
     }
 
