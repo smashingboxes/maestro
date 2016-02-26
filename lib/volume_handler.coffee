@@ -40,4 +40,4 @@ class VolumeHandler
 
 # export things
 module.exports = () ->
-  new VolumeHandler(0)
+  new VolumeHandler(4)
