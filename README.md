@@ -9,13 +9,21 @@ Slack-Powered Spotify music bot.
 :see_no_evil: **You Must Use Node 0.10.x** :see_no_evil:  
 :see_no_evil: **Only Works on OSX** :see_no_evil:
 
+### Configuring Spotify
 1. Create a Spotify Premium Account.
 1. Download a [Spotify App Developers Key](https://devaccount.spotify.com/my-account/keys/).
-1. [Download the latest release](https://github.com/smashingboxes/maestro/releases/latest).
-1. Put your `spotify_appkey.key` file in Maestro's root directory.
+
+### Configuring the Slack integration
 1. Create a [Slack Outgoing Webhook](https://api.slack.com/outgoing-webhooks).
-1. Copy the token from the webhook into the `config.json` file.
+1. In URL(s) put `<address_to_your_bot>/handle` [we use ngrok for this](https://ngrok.com/)
+1. In Trigger Word(s) put `play, pause, stop, skip, shuffle, vol, list, status, help, mute, unmute, banned, voteban, queue`
+
+### Starting the Bot
+1. [Download the latest release](https://github.com/smashingboxes/maestro/releases/latest).
+1. `npm install`
 1. Put your Spotify login infor into the `config.json` file.
+1. Put your `spotify_appkey.key` file in Maestro's root directory.
+1. Copy the token from the webhook into the `config.json` file.
 1. `npm start`.
 1. Plug your **OSX** machine into some speakers.
 1. Jam :headphones:
