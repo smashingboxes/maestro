@@ -36,6 +36,7 @@ Slack-Powered Spotify music bot.
 
 1. `git clone https://github.com/smashingboxes/maestro.git`.
 1. `cd maestro`
+1. Follow the install steps to create a Spotify token and configure the app.
 1. `npm install`
 1. `npm test`
 
