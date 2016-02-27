@@ -20,6 +20,8 @@ Slack-Powered Spotify music bot.
 
 ### Starting the Bot
 1. [Download the latest release](https://github.com/smashingboxes/maestro/releases/latest).
+1. Unzip and cd into the maestro directory
+1. `cp config.example.json config.json`
 1. `npm install`
 1. Put your Spotify login username and password into the `config.json` file.
 1. Put your `spotify_appkey.key` file in Maestro's root directory.
