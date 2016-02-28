@@ -265,6 +265,11 @@ describe 'TrackHandler', ->
       afterEach ->
         SpotifyHandler.state = {}
 
+  describe '#invali', ->
+    it 'gives true if the uri has http in it', ->
+      expect(@handler.invalid('https://something.com')).to.be.true
+      expect(@handler.invalid('this:thing:is:spotify:uri')).to.be.false
+
   afterEach ->
     @pause.reset()
     @stop.reset()
