@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/smashingboxes/maestro.svg?branch=master)](https://travis-ci.org/smashingboxes/maestro)
 [![Code Climate](https://codeclimate.com/github/smashingboxes/maestro/badges/gpa.svg)](https://codeclimate.com/github/smashingboxes/maestro)
-<img src='/roboto.png' width=350/>
+<img src='/roboto.png' width=200/>
 
 Slack-Powered Spotify music bot.
 
