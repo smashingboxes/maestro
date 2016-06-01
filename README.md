@@ -4,7 +4,7 @@
 [![Code Climate](https://codeclimate.com/github/smashingboxes/maestro/badges/gpa.svg)](https://codeclimate.com/github/smashingboxes/maestro)
 <img src='/roboto.png' width=270/>
 
-Slack-Powered Spotify music bot.
+A Slack-Powered Spotify music bot for Spotify.
 
 ## Install
 
