@@ -14,7 +14,7 @@ A Slack-Powered music bot for Spotify.
 ### Configuring Spotify
 1. Create a Spotify Premium Account.
 1. `brew install libspotify` install libspotify
-1. Download a [Spotify App Developers Key](https://devaccount.spotify.com/my-account/keys/).
+1. Download a [Spotify App Developers Key](https://developer.spotify.com/my-applications/#!/).
 
 ### Configuring the Slack integration
 1. Create a [Slack Outgoing Webhook](https://api.slack.com/outgoing-webhooks).
