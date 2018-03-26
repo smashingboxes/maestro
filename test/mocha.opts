@@ -1,3 +1,0 @@
---recursive
---compilers coffee:coffee-script/register
---require coffee-coverage/register-istanbul
