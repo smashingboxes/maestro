@@ -14,7 +14,7 @@ A Slack-Powered music bot for Spotify, using [Sinatra](http://sinatrarb.com/) an
 ```sh
 brew install shpotify
 
-git clone <REPO_URL>
+git clone git@github.com:smashingboxes/maestro.git
 cd maestro
 bundle install
 ```
