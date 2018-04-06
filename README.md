@@ -46,7 +46,7 @@ Once that's done, you can interact with it via any command
 There are many ways to get an external URL or static IP. The easiest is to use [ngrok]():
 
 ```sh
-brew install ngrok
+brew cask install ngrok
 ngrok http 4567
 ```
 
