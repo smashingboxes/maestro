@@ -2,6 +2,7 @@ require "sinatra"
 require "json"
 
 HELP_TEXT = <<~HELP_TEXT.freeze
+  Usage:
   `/maestro play` -- Resumes playback where Spotify last left off.
   `/maestro play <song name>` -- Finds a song by name and plays it.
   `/maestro play album <album name>` -- Finds an album by name and plays it.
