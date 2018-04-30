@@ -35,4 +35,17 @@ describe "Maestro" do
       expect(json_response["text"]).to_not include("CLIENT_SECRET")
     end
   end
+
+  describe "Invalid command" do
+    let(:text) { "bogus" }
+
+    it "returns the usage text" do
+      expect(last_response).to_not be_ok
+      expect(json_response["response_type"]).to eq("in_channel")
+      expect(json_response["text"]).to include("Usage:")
+      expect(json_response["text"]).to include("/maestro")
+      expect(json_response["text"]).to_not include("CLIENT_ID")
+      expect(json_response["text"]).to_not include("CLIENT_SECRET")
+    end
+  end
 end

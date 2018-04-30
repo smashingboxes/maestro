@@ -435,8 +435,14 @@ while [ $# -gt 0 ]; do
             osascript -e "tell application \"Spotify\" to set player position to $2";
             break;;
 
-        "help" | * )
+        "help" )
             showHelp;
+            break ;;
+
+         * )
+            showHelp;
+            echo "MEH" > /tmp/meh.txt;
+            exit 1;
             break ;;
     esac
 done
