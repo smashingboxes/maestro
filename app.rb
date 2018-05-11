@@ -33,13 +33,20 @@ HELP_TEXT = <<~HELP_TEXT.freeze
   `/maestro toggle repeat` -- Toggles repeat playback mode.
 HELP_TEXT
 
+VALID_COMMANDS = %w(play next prev replay pos pause stop quit vol status share toggle)
+
 def spotify(args)
-  return [HELP_TEXT, true] if args == "help"
-  puts "# > spotify #{args}"
-  output = `./spotify.sh #{args}`
+  args.downcase!
+  command, args = *split_args(args)
+  return [HELP_TEXT, true] if args == "help" || !VALID_COMMANDS.include?(command)
+  output = Spotify.public_send(command.to_sym, args)
   puts output
   output = HELP_TEXT unless $?.success?
   [output, $?.success?]
+end
+
+def split_args(args)
+  args.split(" ")
 end
 
 post "/maestro" do
