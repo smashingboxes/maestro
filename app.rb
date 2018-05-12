@@ -33,7 +33,7 @@ HELP_TEXT = <<~HELP_TEXT.freeze
   `/maestro toggle repeat` -- Toggles repeat playback mode.
 HELP_TEXT
 
-VALID_COMMANDS = %w(play next prev replay pos pause stop quit vol status share toggle)
+VALID_COMMANDS = %w(play next prev replay pos pause stop quit vol status share toggle).freeze
 
 def spotify(args)
   args.downcase!

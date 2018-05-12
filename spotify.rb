@@ -1,8 +1,16 @@
 class Spotify
   VALID_TOGGLES = %w(shuffle repeat).freeze
   VALID_SHARES = %w(url uri).freeze
-  NAME_REGEX = /[a-z0-9\s]*/
-  URI_REGEX = /\Aspotify:(track|album|artist|user):([a-z0-9]+(:playlist:))*(spotify:playlist:)?[a-z0-9]{22}\z/i
+  NAME_REGEX = /\A(artist|album|list) [a-z0-9\.\-_\s]*\z/i
+  URI_REGEX = %r{
+  \A
+    uri\s
+    spotify:(track|album|artist|user):
+    ([a-z0-9]+(:playlist:))*
+    (spotify:playlist:)?
+    [a-z0-9]{22}
+  \z
+  }ix
 
   class << self
     def play(play_args)
@@ -42,7 +50,7 @@ class Spotify
 
     def share(share_item)
       return unless valid_share?(share_item)
-      send_command("share #{share_item}")
+      send_command("share #{share_item}".rstrip) # Prevent extra whitespace
     end
 
     private
@@ -57,7 +65,7 @@ class Spotify
       if vol_arg == vol_arg.to_i
         vol_arg.between?(0, 100)
       else
-        ["up", "down"].include?(vol_arg)
+        %w(up down).include?(vol_arg)
       end
     end
 
@@ -70,7 +78,9 @@ class Spotify
     end
 
     def valid_play?(play_args)
-      play_args.empty? || validate_uri(play_args) || validate_name(play_args)
+      return true if play_args.empty?
+      return validate_uri(play_args) if uri_provided?(play_args)
+      validate_name(play_args)
     end
 
     def validate_uri(uri)
@@ -92,8 +102,5 @@ class Spotify
     def uri_provided?(play_args)
       play_command(play_args) == "uri"
     end
-
-  rescue NoMethodError
-    "Spotify cannot respond to the command requested"
   end
 end
