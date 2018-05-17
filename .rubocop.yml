@@ -138,7 +138,7 @@ Style/TrailingCommaInArguments:
   - comma
   - consistent_comma
   - no_comma
-Style/TrailingCommaInLiteral:
+Style/TrailingCommaInArrayLiteral:
   Description: Checks for trailing comma in hash literals.
   StyleGuide: https://github.com/bbatsov/ruby-style-guide#no-trailing-array-commas
   Enabled: false

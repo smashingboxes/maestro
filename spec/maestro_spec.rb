@@ -14,8 +14,6 @@ describe "Maestro" do
   let(:params) { { text: text } }
   let(:text) { "" }
 
-  before { subject }
-
   def app
     Sinatra::Application
   end
@@ -24,16 +22,47 @@ describe "Maestro" do
     JSON.parse(last_response.body)
   end
 
+  shared_examples_for "a valid maestro command" do
+    let(:expected_args) { any_args }
+    it "invokes the correct Spotify method with the correct arguments" do
+      expect(Spotify).to receive(expected_command).with(expected_args)
+      subject
+    end
+  end
+
   describe "/maestro help" do
     let(:text) { "help" }
 
     it "returns the usage text" do
+      subject
       expect(last_response).to be_ok
       expect(json_response["response_type"]).to eq("in_channel")
       expect(json_response["text"]).to include("Usage:")
       expect(json_response["text"]).to include("/maestro")
       expect(json_response["text"]).to_not include("CLIENT_ID")
       expect(json_response["text"]).to_not include("CLIENT_SECRET")
+    end
+  end
+
+  describe "Valid command" do
+    context "command with no args" do
+      let(:text) { "stop" }
+      let(:expected_command) { :stop }
+
+      it_behaves_like "a valid maestro command"
+    end
+
+    context "command with args" do
+      let(:text) { "pos #{time}" }
+      let(:expected_command) { :pos }
+
+      context "with a valid number" do
+        let(:time) { "34" }
+
+        it_behaves_like "a valid maestro command" do
+          let(:expected_args) { time }
+        end
+      end
     end
   end
 
@@ -41,6 +70,7 @@ describe "Maestro" do
     let(:text) { "bogus" }
 
     it "returns the usage text" do
+      subject
       expect(last_response).to be_ok
       expect(json_response["response_type"]).to eq("in_channel")
       expect(json_response["text"]).to include("Usage:")
@@ -50,9 +80,10 @@ describe "Maestro" do
     end
   end
 
-  describe "Command execution" do
+  describe "Bash command execution" do
     let(:text) { "status; ls" }
     it "returns the usage text" do
+      subject
       expect(last_response).to be_ok
       expect(json_response["text"]).to include("Usage:")
       expect(json_response["text"]).to_not include("Gemfile")

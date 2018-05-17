@@ -14,7 +14,7 @@ class Spotify
 
   class << self
     def play(play_args)
-      return unless valid_play?(play_args)
+      return invalid_command unless valid_play?(play_args)
       send_command("play #{play_args}")
     end
 
@@ -35,12 +35,12 @@ class Spotify
     end
 
     def pos(time)
-      return unless time == time.to_i
+      return invalid_command unless time == time.to_i
       send_command("pos #{time.to_i}")
     end
 
     def vol(change = nil)
-      return unless valid_volume_change?(change)
+      return invalid_command unless valid_volume_change?(change)
       send_command("vol #{change}")
     end
 
@@ -49,7 +49,7 @@ class Spotify
     end
 
     def share(share_item)
-      return unless valid_share?(share_item)
+      return invalid_command unless valid_share?(share_item)
       send_command("share #{share_item}".rstrip) # Prevent extra whitespace
     end
 
@@ -59,6 +59,10 @@ class Spotify
       output = `./spotify.sh #{command}`
       output = HELP_TEXT unless $?.success?
       [output, $?.success?]
+    end
+
+    def invalid_command
+      [HELP_TEXT, false]
     end
 
     def valid_volume_change?(vol_arg)

