@@ -35,7 +35,7 @@ HELP_TEXT = <<~HELP_TEXT.freeze
 HELP_TEXT
 
 # Find methods unique to Spotify class
-VALID_COMMANDS = (Spotify.methods - Object.methods).freeze
+VALID_COMMANDS = (Spotify.public_methods - Object.public_methods).freeze
 
 def process_spotify_command(args)
   args.downcase!

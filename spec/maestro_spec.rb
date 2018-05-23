@@ -30,9 +30,7 @@ describe "Maestro" do
     end
   end
 
-  describe "/maestro help" do
-    let(:text) { "help" }
-
+  shared_examples_for "it displays the help text" do
     it "returns the usage text" do
       subject
       expect(last_response).to be_ok
@@ -42,6 +40,12 @@ describe "Maestro" do
       expect(json_response["text"]).to_not include("CLIENT_ID")
       expect(json_response["text"]).to_not include("CLIENT_SECRET")
     end
+  end
+
+  describe "/maestro help" do
+    let(:text) { "help" }
+
+    it_behaves_like "it displays the help text"
   end
 
   describe "Valid command" do
@@ -69,24 +73,12 @@ describe "Maestro" do
   describe "Invalid command" do
     let(:text) { "bogus" }
 
-    it "returns the usage text" do
-      subject
-      expect(last_response).to be_ok
-      expect(json_response["response_type"]).to eq("in_channel")
-      expect(json_response["text"]).to include("Usage:")
-      expect(json_response["text"]).to include("/maestro")
-      expect(json_response["text"]).to_not include("CLIENT_ID")
-      expect(json_response["text"]).to_not include("CLIENT_SECRET")
-    end
+    it_behaves_like "it displays the help text"
   end
 
   describe "Bash command execution" do
     let(:text) { "status; ls" }
-    it "returns the usage text" do
-      subject
-      expect(last_response).to be_ok
-      expect(json_response["text"]).to include("Usage:")
-      expect(json_response["text"]).to_not include("Gemfile")
-    end
+
+    it_behaves_like "it displays the help text"
   end
 end

