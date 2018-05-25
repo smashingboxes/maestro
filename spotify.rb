@@ -13,9 +13,9 @@ class Spotify
   }ix
 
   class << self
-    def play(play_args)
+    def play(play_args = "")
       return invalid_command unless valid_play?(play_args)
-      send_command("play #{play_args}")
+      send_command("play #{play_args}".rstrip)
     end
 
     def stop

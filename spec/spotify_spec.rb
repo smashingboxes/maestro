@@ -145,6 +145,12 @@ describe "Spotify" do
     subject { Spotify.play(play_args) }
     let(:expected_command) { "./spotify.sh play #{play_args}" }
 
+    context "with no args" do
+      subject { Spotify.play }
+      let(:expected_command) { "./spotify.sh play" }
+      it_behaves_like "a valid command"
+    end
+
     context "search by artist" do
       let(:play_args) { "artist Trivium" }
       it_behaves_like "a valid command"
