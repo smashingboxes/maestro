@@ -1,5 +1,6 @@
 require "sinatra"
 require "json"
+require "./spotify.rb"
 
 HELP_TEXT = <<~HELP_TEXT.freeze
   Usage:
@@ -33,17 +34,27 @@ HELP_TEXT = <<~HELP_TEXT.freeze
   `/maestro toggle repeat` -- Toggles repeat playback mode.
 HELP_TEXT
 
-def spotify(args)
-  return [HELP_TEXT, true] if args == "help"
-  puts "# > spotify #{args}"
-  output = `./spotify.sh #{args}`
-  puts output
-  output = HELP_TEXT unless $?.success?
-  [output, $?.success?]
+# Find methods unique to Spotify class
+VALID_COMMANDS = (Spotify.public_methods - Object.public_methods).freeze
+
+def process_spotify_command(args)
+  args.downcase!
+  command, *params = *split_args(args)
+  command = command.to_sym
+  return [HELP_TEXT, true] if args == "help" || !VALID_COMMANDS.include?(command)
+  Spotify.public_send(*format_params(command, params))
+end
+
+def format_params(command, params)
+  [command, params.join(" ")].reject(&:empty?)
+end
+
+def split_args(args)
+  args.split(" ")
 end
 
 post "/maestro" do
-  output, success = spotify(params["text"])
+  output, success = process_spotify_command(params["text"])
 
   response_code = success ? 200 : 422
   body = { response_type: "in_channel", text: output }
