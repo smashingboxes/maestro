@@ -39,9 +39,9 @@ class Spotify
       send_command("pos #{time.to_i}")
     end
 
-    def vol(change = nil)
+    def vol(change = "")
       return invalid_command unless valid_volume_change?(change)
-      send_command("vol #{change}")
+      send_command("vol #{change}".rstrip)
     end
 
     def status
@@ -69,7 +69,7 @@ class Spotify
       if vol_arg == vol_arg.to_i
         vol_arg.between?(0, 100)
       else
-        %w(up down).include?(vol_arg)
+        ["", "up", "down"].include?(vol_arg)
       end
     end
 

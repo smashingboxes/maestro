@@ -98,9 +98,11 @@ describe "Spotify" do
       it_behaves_like "a valid command"
     end
 
-    context "with missing vol" do
-      let(:vol_args) { nil }
-      it_behaves_like "an invalid command"
+    context "with no vol" do
+      # Show current volume
+      subject { Spotify.vol }
+      let(:expected_command) { "./spotify.sh vol" }
+      it_behaves_like "a valid command"
     end
 
     context "with invalid input" do
