@@ -1,4 +1,5 @@
 class Spotify
+  APP_PATH = "/Applications/Spotify.app".freeze # TODO: Make this configurable
   VALID_TOGGLES = %w(shuffle repeat).freeze
   VALID_SHARES = %w(url uri).freeze
   NAME_REGEX = /\A(artist|album|list) [a-z0-9\.\-_\s]*\z/i
@@ -15,7 +16,11 @@ class Spotify
   class << self
     def play(play_args = "")
       return invalid_command unless valid_play?(play_args)
-      send_command("play #{play_args}".rstrip)
+      send_command("play #{play_args}")
+    end
+
+    def pause
+      send_command("pause")
     end
 
     def stop
@@ -34,14 +39,21 @@ class Spotify
       send_command("replay")
     end
 
+    def restart
+      quit
+      sleep(5) # Give Spotify a few seconds to shut down
+      `open #{APP_PATH}`
+      output = $?.success? ? "Spotify has been restarted" : "I had some trouble restarting Spotify"
+      [output, $?.success?]
+    end
+
     def pos(time)
       return invalid_command unless time == time.to_i
       send_command("pos #{time.to_i}")
     end
 
-    def vol(change = "")
-      return invalid_command unless valid_volume_change?(change)
-      send_command("vol #{change}".rstrip)
+    def quit
+      send_command("quit")
     end
 
     def status
@@ -50,13 +62,23 @@ class Spotify
 
     def share(share_item)
       return invalid_command unless valid_share?(share_item)
-      send_command("share #{share_item}".rstrip) # Prevent extra whitespace
+      send_command("share #{share_item}")
+    end
+
+    def toggle(toggle_item)
+      return invalid_command unless valid_toggle?(toggle_item)
+      send_command("toggle #{toggle_item}")
+    end
+
+    def vol(change = "")
+      return invalid_command unless valid_volume_change?(change)
+      send_command("vol #{change}")
     end
 
     private
 
     def send_command(command)
-      output = `./spotify.sh #{command}`
+      output = `./spotify.sh #{command.rstrip}`
       output = HELP_TEXT unless $?.success?
       [output, $?.success?]
     end

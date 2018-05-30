@@ -50,7 +50,7 @@ describe "Maestro" do
 
   describe "Valid command" do
     context "command with no args" do
-      let(:text) { "stop" }
+      let(:text) { "Stop" }
       let(:expected_command) { :stop }
 
       it_behaves_like "a valid maestro command"
@@ -66,6 +66,16 @@ describe "Maestro" do
         it_behaves_like "a valid maestro command" do
           let(:expected_args) { time }
         end
+      end
+    end
+
+    context "with a uri" do
+      let(:text) { "play uri #{uri}" }
+      let(:expected_command) { :play }
+      let(:uri) { "spotify:track:6n50vexd6yBNvSOc6QHT5X" }
+
+      it_behaves_like "a valid maestro command" do
+        let(:expected_args) {  "uri #{uri}" }
       end
     end
   end
