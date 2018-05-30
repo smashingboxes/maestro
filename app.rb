@@ -18,6 +18,7 @@ HELP_TEXT = <<~HELP_TEXT.freeze
   `/maestro pause` -- Pauses (or resumes) Spotify playback.
   `/maestro stop` -- Stops playback.
   `/maestro quit` -- Stops playback and quits Spotify.
+  `/maestro restart` -- Quits and restarts Spotify.
 
   `/maestro vol up` -- Increases the volume by 10%.
   `/maestro vol down` -- Decreases the volume by 10%.

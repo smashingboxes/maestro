@@ -50,7 +50,14 @@ describe "Maestro" do
 
   describe "Valid command" do
     context "command with no args" do
-      let(:text) { "Stop" }
+      let(:text) { "stop" }
+      let(:expected_command) { :stop }
+
+      it_behaves_like "a valid maestro command"
+    end
+
+    context "mixed case" do
+      let(:text) { "sToP" }
       let(:expected_command) { :stop }
 
       it_behaves_like "a valid maestro command"
