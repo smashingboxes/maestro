@@ -56,6 +56,13 @@ describe "Maestro" do
       it_behaves_like "a valid maestro command"
     end
 
+    context "mixed case" do
+      let(:text) { "sToP" }
+      let(:expected_command) { :stop }
+
+      it_behaves_like "a valid maestro command"
+    end
+
     context "command with args" do
       let(:text) { "pos #{time}" }
       let(:expected_command) { :pos }
@@ -66,6 +73,16 @@ describe "Maestro" do
         it_behaves_like "a valid maestro command" do
           let(:expected_args) { time }
         end
+      end
+    end
+
+    context "with a uri" do
+      let(:text) { "play uri #{uri}" }
+      let(:expected_command) { :play }
+      let(:uri) { "spotify:track:6n50vexd6yBNvSOc6QHT5X" }
+
+      it_behaves_like "a valid maestro command" do
+        let(:expected_args) {  "uri #{uri}" }
       end
     end
   end

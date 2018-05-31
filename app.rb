@@ -18,11 +18,12 @@ HELP_TEXT = <<~HELP_TEXT.freeze
   `/maestro pause` -- Pauses (or resumes) Spotify playback.
   `/maestro stop` -- Stops playback.
   `/maestro quit` -- Stops playback and quits Spotify.
+  `/maestro restart` -- Quits and restarts Spotify.
 
   `/maestro vol up` -- Increases the volume by 10%.
   `/maestro vol down` -- Decreases the volume by 10%.
   `/maestro vol <amount>` -- Sets the volume to an amount between 0 and 100.
-  `/maestro vol [show]` -- Shows the current Spotify volume.
+  `/maestro vol` -- Shows the current Spotify volume.
 
   `/maestro status` -- Shows the current player status.
 
@@ -38,9 +39,8 @@ HELP_TEXT
 VALID_COMMANDS = (Spotify.public_methods - Object.public_methods).freeze
 
 def process_spotify_command(args)
-  args.downcase!
   command, *params = *split_args(args)
-  command = command.to_sym
+  command = command.downcase.to_sym
   return [HELP_TEXT, true] if args == "help" || !VALID_COMMANDS.include?(command)
   Spotify.public_send(*format_params(command, params))
 end
