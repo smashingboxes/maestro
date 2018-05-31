@@ -1,4 +1,4 @@
-# Maestro
+># Maestro
 
 [![Build Status](https://travis-ci.org/smashingboxes/maestro.svg?branch=master)](https://travis-ci.org/smashingboxes/maestro)
 [![Code Climate](https://codeclimate.com/github/smashingboxes/maestro/badges/gpa.svg)](https://codeclimate.com/github/smashingboxes/maestro)
@@ -44,30 +44,34 @@ A Slack-Powered music bot for Spotify.
 1. `npm test`
 
 ## Commands
-**Commands**
-> `play [Spotify URI]` - Starts/resumes playback  
-> `play [Spotify URI]` - Immediately switches to the linked track.  
-> `pause` - Pauses playback at the current time.  
-> `stop` - Stops playback and resets to the beginning of the current track.  
-> `skip` - Skips (or shuffles) to the next track in the playlist.  
-> `shuffle` - Toggles shuffle on or off.  
-> `vol [up|down]` Turns the volume either up/down one notch.  
-> `vol [0..10]` Adjust volume directory to a step between `0` and `10`.  
-> `mute` - Same as `vol 0`.  
-> `unmute` - Same as `vol 0`.  
-> `status` - Shows the currently playing song, playlist and whether you're shuffling or not.  
-> `voteban` - Cast a vote to have the current track banned  
-> `banned` - See tracks that are currently banned  
-> `help` - Shows a list of commands with a short explanation.  
 
-**Queue**
-> `queue [Spotify URI]` - Add a song to the queue  
-> `queue` - See the tracks currently in the queue  
+>  `/maestro play` -- Resumes playback where Spotify last left off.
+>  `/maestro play <song name>` -- Finds a song by name and plays it.
+>  `/maestro play album <album name>` -- Finds an album by name and plays it.
+>  `/maestro play artist <artist name>` -- Finds an artist by name and plays it.
+>  `/maestro play list <playlist name>` -- Finds a playlist by name and plays it.
+>  `/maestro play uri <uri>` -- Play songs from specific uri.
 
-**Playlists**
-> `list add <name> <Spotify URI>` - Adds a list that can later be accessed under <name>.  
-> `list remove <name>` - Removes the specified list.  
-> `list rename <old name> <new name>` - Renames the specified list.  
-> `list <name>` - Selects the specified list and starts playback.  
+>  `/maestro next` -- Skips to the next song in a playlist.
+>  `/maestro prev` -- Returns to the previous song in a playlist.
+>  `/maestro replay` -- Replays the current track from the begining.
+>  `/maestro pos <time>` -- Jumps to a time (in secs) in the current song.
+>  `/maestro pause` -- Pauses (or resumes) Spotify playback.
+>  `/maestro stop` -- Stops playback.
+>  `/maestro quit` -- Stops playback and quits Spotify.
+>  `/maestro restart` -- Quits and restarts Spotify.
+
+>  `/maestro vol up` -- Increases the volume by 10%.
+>  `/maestro vol down` -- Decreases the volume by 10%.
+>  `/maestro vol <amount>` -- Sets the volume to an amount between 0 and 100.
+>  `/maestro vol` -- Shows the current Spotify volume.
+>  `/maestro status` -- Shows the current player status.
+
+>  `/maestro share` -- Displays the current song's Spotify URL and URI.
+>  `/maestro share url` -- Displays the current song's Spotify URL.
+>  `/maestro share uri` -- Displays the current song's Spotify URI.
+
+>  `/maestro toggle shuffle` -- Toggles shuffle playback mode.
+>  `/maestro toggle repeat` -- Toggles repeat playback mode.
 
 ([inspired by Crispify](https://github.com/crispymtn/crispyfi))
