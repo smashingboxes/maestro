@@ -88,8 +88,8 @@ class Spotify
     end
 
     def valid_volume_change?(vol_arg)
-      if vol_arg == vol_arg.to_i
-        vol_arg.between?(0, 100)
+      if vol_arg == vol_arg.to_i.to_s
+        vol_arg.to_i.between?(0, 100)
       else
         ["", "up", "down"].include?(vol_arg)
       end

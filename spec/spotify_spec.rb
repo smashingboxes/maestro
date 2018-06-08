@@ -100,7 +100,8 @@ describe "Spotify" do
     end
 
     context "with a volume integer" do
-      let(:vol_args) { rand(0..100) }
+      # to_s since args come from app.rb as strings
+      let(:vol_args) { rand(0..100).to_s }
 
       it_behaves_like "a valid command"
     end
