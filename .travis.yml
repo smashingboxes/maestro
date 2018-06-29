@@ -2,3 +2,4 @@ language: ruby
 script:
   - bundle exec rubocop
   - bundle exec rspec
+  - bundle exec bundler-audit
