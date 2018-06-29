@@ -1,25 +1,4 @@
-language: node_js
-node_js:
-- 0.10.38
-env:
-- NODE_ENV=travis
-sudo: true
-before_script:
-- openssl aes-256-cbc -K $encrypted_6fbba9547f2a_key -iv $encrypted_6fbba9547f2a_iv
-  -in test/spotify_appkey.key.enc -out spotify_appkey.key -d
-- wget https://developer.spotify.com/download/libspotify/libspotify-12.1.51-Linux-x86_64-release.tar.gz
-- tar zxfv libspotify-12.1.51-Linux-x86_64-release.tar.gz
-- cd libspotify-12.1.51-Linux-x86_64-release
-- sudo make install prefix=/usr/local
-- sudo ldconfig
-- cd ..
-- cp config.example.json config.json
-- npm install -g coffeelint
+language: ruby
 script:
-- npm test
-- "./node_modules/.bin/istanbul report"
-- CODECLIMATE_REPO_TOKEN=fa6fa53b0bcadd108d8f5a1cc861d5774fe479218a7d714a66d1369082aecc1d
-  codeclimate-test-reporter < coverage/lcov.info
-notifications:
-  slack:
-    secure: PaYNwtMGjMcHA6vkpp585qssgp+LhkqjZUmbs6BM13SkU4ubWKRLTVCBNq79MOFi0XcqXh5vdtRW5pbmA5zSM7xs8lZdGtWzyg2e6YHrNsa+20j3pQvnRMt74aVz2xCzo/M4CFZbFa9Y2svMdLv5hIfNTresN+L91FGVU2+yHClmsLqzdENO0wzA+C9GIzzqcPfm2efMEZufHx+Z/fs1z59oTUDX9AJW8wlZvVADJe/pjgRhpa60MiqD9TRPmIQPNpZYOrQsGRtwaWmSG/zbzbLWLp8kxEji9IQwkoAdWWkskTWRdxaskpO4Etlc1mFGeMu2F1ZPjp4XQZ7L6/KYuSCTuQ25PuzHWaZfsvF6NySRvWL06Y/c5YBGKbOf3t3yjtU0tGxdLX0UIj7fEjTdWCbS22hpN7t0m0DnVuSRPzfStkPdDvzMWkD3Zfo79i9Fay+CFe8uLefd9BkDKUFmEcx3rAxnCq4pE2Tj7aLLpsORzsttYs/CPJz/3QtKpTGMlCh5Z7/a50W+ieBDPo+iKfjoOXkjfe0eQ+GuAg0LcJ9aLCUijuELNrEWTzfvbGkNPL0kTluhPf8GKx5u+O8lulJOkr6oFwQAgHaehptm1X3t2xEzc5Jcv8XDlbRMPNDUa0lGlxXeyRWfxbI6GstLl1gGo/U1zwbyFKeGiWS5nNM=
+  - bundle exec rubocop
+  - bundle exec rspec
