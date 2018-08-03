@@ -127,10 +127,11 @@ describe "Spotify" do
 
   describe ".share" do
     subject { Spotify.share(share_args) }
+    let(:share_args) { "" }
     let(:expected_command) { "./spotify.sh share #{share_args}".rstrip }
 
     context "empty string" do
-      let(:share_args) { "" }
+      subject { Spotify.share }
 
       it_behaves_like "a valid command"
     end
