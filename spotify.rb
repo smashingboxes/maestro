@@ -31,6 +31,8 @@ class Spotify
       send_command("next")
     end
 
+    alias_method :skip, :next
+
     def prev
       send_command("prev")
     end

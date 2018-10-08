@@ -48,6 +48,14 @@ describe "Spotify" do
     it_behaves_like "a valid command"
   end
 
+  describe ".skip" do
+    subject { Spotify.skip }
+    # skip is an alias of next
+    let(:expected_command) { "./spotify.sh next" }
+
+    it_behaves_like "a valid command"
+  end
+
   describe ".prev" do
     subject { Spotify.prev }
     let(:expected_command) { "./spotify.sh prev" }
