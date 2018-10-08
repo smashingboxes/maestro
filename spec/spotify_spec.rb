@@ -192,6 +192,11 @@ describe "Spotify" do
       it_behaves_like "a valid command"
     end
 
+    context "search by song" do
+      let(:play_args) { "like light to the flies" }
+      it_behaves_like "a valid command"
+    end
+
     context "search by artist" do
       let(:play_args) { "artist Trivium" }
       it_behaves_like "a valid command"
