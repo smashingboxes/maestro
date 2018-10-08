@@ -2,7 +2,7 @@ class Spotify
   APP_PATH = "/Applications/Spotify.app".freeze # TODO: Make this configurable
   VALID_TOGGLES = %w(shuffle repeat).freeze
   VALID_SHARES = %w(url uri).freeze
-  NAME_REGEX = /\A(artist|album|list) [a-z0-9\.\-_\s]*\z/i
+  NAME_REGEX = /\A[a-z0-9\.\-_\s]*\z/i
   URI_REGEX = %r{
   \A
     uri\s
@@ -119,10 +119,6 @@ class Spotify
 
     def play_command(play_args)
       play_args.split(" ").first
-    end
-
-    def name_provided?(play_args)
-      !uri_provided(play_args)
     end
 
     def uri_provided?(play_args)
