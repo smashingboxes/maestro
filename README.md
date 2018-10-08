@@ -82,7 +82,7 @@ new one.**
 
 ### Creating a slash command
 
-To create a slash command in Slack, go [here](https://api.slack.com/outgoing-webhooks) and fill in
+To create a slash command in Slack, go [here](https://api.slack.com/slash-commands) and fill in
 the following settings:
 
 - Command: "/maestro"
