@@ -82,11 +82,10 @@ new one.**
 
 ### Creating a slash command
 
-To create a slash command in Slack, go [here](https://api.slack.com/slash-commands) and fill in
-the following settings:
+To create a slash command in Slack, go to https://slack.com/apps/A0F82E8CA-slash-commands, click "Add Configuration", and fill in the following settings:
 
 - Command: "/maestro"
-- URL: Your external URL (from previous section)
+- URL: Your external URL (from previous section), followed by `/maestro`. So, for example, if your ngrok url is `http://71ca42f4.ngrok.io`, you'd enter `http://71ca42f4.ngrok.io/maestro`
 - Method: POST
 - Customize Name: Maestro
 - Customize Icon: Any icon you'd like. Feel free to use [ours](./maestro.png)
