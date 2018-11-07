@@ -441,55 +441,8 @@ while [ $# -gt 0 ]; do
             uri=`osascript -e 'tell application "Spotify" to spotify url of current track'`;
             track=`osascript -e 'tell application "Spotify" to name of current track as string'`;
 
-            SPOTIFY_TOKEN_URI="https://accounts.spotify.com/api/token";
-                if [ -z "${CLIENT_ID}" ]; then
-                    echo "Invalid Client ID, please update ${USER_CONFIG_FILE}";
-                    showAPIHelp;
-                    exit 1;
-                fi
-                if [ -z "${CLIENT_SECRET}" ]; then
-                    echo "Invalid Client Secret, please update ${USER_CONFIG_FILE}";
-                    showAPIHelp;
-                    exit 1;
-                fi
-                SHPOTIFY_CREDENTIALS=$(printf "${CLIENT_ID}:${CLIENT_SECRET}" | base64 | tr -d "\n");
-                SPOTIFY_PLAY_URI="";
-
-                getAccessToken() {
-                    echo "Connecting to Spotify's API";
-
-                    SPOTIFY_TOKEN_RESPONSE_DATA=$( \
-                        curl "${SPOTIFY_TOKEN_URI}" \
-                            --silent \
-                            -X "POST" \
-                            -H "Authorization: Basic ${SHPOTIFY_CREDENTIALS}" \
-                            -d "grant_type=client_credentials" \
-                    )
-                    if ! [[ "${SPOTIFY_TOKEN_RESPONSE_DATA}" =~ "access_token" ]]; then
-                        echo "Autorization failed, please check ${USER_CONFG_FILE}"
-                        echo "${SPOTIFY_TOKEN_RESPONSE_DATA}"
-                        showAPIHelp
-                        exit 1
-                    fi
-                    SPOTIFY_ACCESS_TOKEN=$( \
-                        printf "${SPOTIFY_TOKEN_RESPONSE_DATA}" \
-                        | grep -E -o '"access_token":".*",' \
-                        | sed 's/"access_token"://g' \
-                        | sed 's/"//g' \
-                        | sed 's/,.*//g' \
-                    )
-                }
-
-            getAccessToken;
-
-            PW_playlist='5xdS7gI6C5KpKm4LHVKaUZ'
-            results=$( \
-                curl -X "POST" \
-                "https://api.spotify.com/v1/playlists/$PW_playlist/tracks?uris=$uri" \
-                -H "Accept: application/json" -H "Authorization: Bearer ${SPOTIFY_ACCESS_TOKEN}" \
-            )
             echo "Attempting to add '$track' to your playlist";
-            echo $results;
+            python add_song.py $CLIENT_ID $CLIENT_SECRET $uri;
             break;;
 
         "help" )
