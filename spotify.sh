@@ -271,7 +271,7 @@ while [ $# -gt 0 ]; do
             fi
             break ;;
 
-        "pause"    )
+        "pause"   )
             state=`osascript -e 'tell application "Spotify" to player state as string'`;
             if [ $state = "playing" ]; then
               echo "Pausing Spotify.";
@@ -315,7 +315,7 @@ while [ $# -gt 0 ]; do
             osascript -e 'tell application "Spotify" to set player position to 0'
             break ;;
 
-        "vol"    )
+        "vol"     )
             vol=`osascript -e 'tell application "Spotify" to sound volume as integer'`;
             if [[ $2 = "" || $2 = "show" ]]; then
                 echo "Current Spotify volume level is $vol.";
@@ -364,13 +364,13 @@ while [ $# -gt 0 ]; do
             fi
             break ;;
 
-        "status" )
+        "status"  )
             uri=`osascript -e 'tell application "Spotify" to spotify url of current track'`;
             showStatus;
-            echo "$uri";
+            echo "Spotify URI: $uri";
             break ;;
 
-        "info" )
+        "info"    )
             info=`osascript -e 'tell application "Spotify"
                 set durSec to (duration of current track / 1000)
                 set tM to (round (durSec / 60) rounding down) as text
@@ -411,7 +411,7 @@ while [ $# -gt 0 ]; do
             echo "$info";
             break ;;
 
-        "share"     )
+        "share"   )
             uri=`osascript -e 'tell application "Spotify" to spotify url of current track'`;
             remove='spotify:track:'
             url=${uri#$remove}
@@ -432,9 +432,64 @@ while [ $# -gt 0 ]; do
             fi
             break;;
 
-        "pos"   )
+        "pos"     )
             echo "Adjusting Spotify play position."
             osascript -e "tell application \"Spotify\" to set player position to $2";
+            break;;
+
+        "add"    )
+            uri=`osascript -e 'tell application "Spotify" to spotify url of current track'`;
+            track=`osascript -e 'tell application "Spotify" to name of current track as string'`;
+
+            SPOTIFY_TOKEN_URI="https://accounts.spotify.com/api/token";
+                if [ -z "${CLIENT_ID}" ]; then
+                    echo "Invalid Client ID, please update ${USER_CONFIG_FILE}";
+                    showAPIHelp;
+                    exit 1;
+                fi
+                if [ -z "${CLIENT_SECRET}" ]; then
+                    echo "Invalid Client Secret, please update ${USER_CONFIG_FILE}";
+                    showAPIHelp;
+                    exit 1;
+                fi
+                SHPOTIFY_CREDENTIALS=$(printf "${CLIENT_ID}:${CLIENT_SECRET}" | base64 | tr -d "\n");
+                SPOTIFY_PLAY_URI="";
+
+                getAccessToken() {
+                    echo "Connecting to Spotify's API";
+
+                    SPOTIFY_TOKEN_RESPONSE_DATA=$( \
+                        curl "${SPOTIFY_TOKEN_URI}" \
+                            --silent \
+                            -X "POST" \
+                            -H "Authorization: Basic ${SHPOTIFY_CREDENTIALS}" \
+                            -d "grant_type=client_credentials" \
+                    )
+                    if ! [[ "${SPOTIFY_TOKEN_RESPONSE_DATA}" =~ "access_token" ]]; then
+                        echo "Autorization failed, please check ${USER_CONFG_FILE}"
+                        echo "${SPOTIFY_TOKEN_RESPONSE_DATA}"
+                        showAPIHelp
+                        exit 1
+                    fi
+                    SPOTIFY_ACCESS_TOKEN=$( \
+                        printf "${SPOTIFY_TOKEN_RESPONSE_DATA}" \
+                        | grep -E -o '"access_token":".*",' \
+                        | sed 's/"access_token"://g' \
+                        | sed 's/"//g' \
+                        | sed 's/,.*//g' \
+                    )
+                }
+
+            getAccessToken;
+
+            PW_playlist='5xdS7gI6C5KpKm4LHVKaUZ'
+            results=$( \
+                curl -X "POST" \
+                "https://api.spotify.com/v1/playlists/$PW_playlist/tracks?uris=$uri" \
+                -H "Accept: application/json" -H "Authorization: Bearer ${SPOTIFY_ACCESS_TOKEN}" \
+            )
+            echo "Attempting to add '$track' to your playlist";
+            echo $results;
             break;;
 
         "help" )

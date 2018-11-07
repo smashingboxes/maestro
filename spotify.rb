@@ -62,6 +62,14 @@ class Spotify
       send_command("status")
     end
 
+    def info
+      send_command("info")
+    end
+
+    def add
+      send_command("add")
+    end
+
     def share(share_item)
       return invalid_command unless valid_share?(share_item)
       send_command("share #{share_item}")
