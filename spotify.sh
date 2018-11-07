@@ -442,7 +442,8 @@ while [ $# -gt 0 ]; do
             track=`osascript -e 'tell application "Spotify" to name of current track as string'`;
 
             echo "Attempting to add '$track' to your playlist";
-            python add_song.py $CLIENT_ID $CLIENT_SECRET $uri;
+            add_song=$(python3 add_song.py $CLIENT_ID $CLIENT_SECRET $uri);
+            echo $add_song;
             break;;
 
         "help" )
