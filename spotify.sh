@@ -365,7 +365,9 @@ while [ $# -gt 0 ]; do
             break ;;
 
         "status" )
+            uri=`osascript -e 'tell application "Spotify" to spotify url of current track'`;
             showStatus;
+            echo "$uri"
             break ;;
 
         "info" )
