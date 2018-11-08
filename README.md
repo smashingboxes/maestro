@@ -32,6 +32,7 @@ To get this to work, you first need to sign up (or into) Spotify’s
 developer site and [create an *Application*][spotify-dev]. Once you’ve
 done so, you can find its `Client ID` and `Client Secret` values and
 enter them into your shpotify config file at `${HOME}/.shpotify.cfg`.
+
 You will need to add your Username as well. This can be found in your
 Spotify profile information. Lastly you will need the ID of the playlist
 that you want to add songs to. This can be found when you share a playlist's
@@ -49,6 +50,13 @@ PLAYLIST="12345playlistID12345"
 ```
 
 ## Usage
+```sh
+pre_setup_oauth.sh
+```
+This will create a necessary file in Python and then make an attempt to retrieve your oAuth code.
+It should open a browser, you will need to copy the URL in the browser and paste it in the terminal.
+This should provide you with an oAuth code that should last for 3600 minutes.
+Still working on having this auto refresh. 
 
 ```sh
 ruby app.rb
@@ -64,6 +72,7 @@ Once that's done, you can interact with it via any command
 ```
 /maestro play <song name>
 /maestro next
+/maestro add
 /maestro vol up
 /maestro vol down
 /maestro status

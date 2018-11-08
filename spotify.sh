@@ -72,6 +72,7 @@ showHelp () {
     echo "  play artist <artist name>    # Finds an artist by name and plays it.";
     echo "  play list <playlist name>    # Finds a playlist by name and plays it.";
     echo "  play uri <uri>               # Play songs from specific uri.";
+    echo "  add                          # Add the current song to your playlist";
     echo;
     echo "  next                         # Skips to the next song in a playlist.";
     echo "  prev                         # Returns to the previous song in a playlist.";
@@ -87,6 +88,7 @@ showHelp () {
     echo "  vol [show]                   # Shows the current Spotify volume.";
     echo;
     echo "  status                       # Shows the current player status.";
+    echo "  info                         # Shows more detailed information of the current song.";
     echo;
     echo "  share                        # Displays the current song's Spotify URL and URI."
     echo "  share url                    # Displays the current song's Spotify URL and copies it to the clipboard."
