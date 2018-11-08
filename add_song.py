@@ -35,4 +35,4 @@ if my_file is True:
     else:
         print("Can't get token for", username)
 else:
-    print("Token is not cached.\nPlease run the Token.py file to cache your token.")
+    print("Token is not cached.\nPlease run the get_token.py file to cache your token.")

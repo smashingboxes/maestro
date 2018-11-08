@@ -23,4 +23,4 @@ token = util.prompt_for_user_token(username,scope,client_id=CLIENT_ID,client_sec
 # else:
 #     print("Can't get token for", username)
 
-print('hello')
+print('token')
