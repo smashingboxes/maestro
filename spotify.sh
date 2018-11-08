@@ -32,7 +32,7 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-USER_CONFIG_DEFAULTS="CLIENT_ID=\"\"\nCLIENT_SECRET=\"\"";
+USER_CONFIG_DEFAULTS="CLIENT_ID=\"\"\nCLIENT_SECRET=\"\"\nUSER=\"\"\nPLAYLIST=\"\"";
 USER_CONFIG_FILE="${HOME}/.shpotify.cfg";
 if ! [[ -f "${USER_CONFIG_FILE}" ]]; then
     touch "${USER_CONFIG_FILE}";
@@ -442,7 +442,7 @@ while [ $# -gt 0 ]; do
             track=`osascript -e 'tell application "Spotify" to name of current track as string'`;
 
             echo "Attempting to add '$track' to your playlist";
-            add_song=$(python3 add_song.py $CLIENT_ID $CLIENT_SECRET $uri);
+            add_song=$(python3 add_song.py $uri);
             echo $add_song;
             break;;
 
