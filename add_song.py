@@ -31,7 +31,8 @@ if my_file is True:
         sp = spotipy.Spotify(auth=token)
         sp.trace = False
         playlists = sp.user_playlist_add_tracks(username, playlist_id, track_ids)
-        pprint.pprint(playlists)
+        #pprint.pprint(playlists)
+        print("Song ", PASSED_TRACK, "\nhas been added to your Maestro playlist")
     else:
         print("Can't get token for", username)
 else:
