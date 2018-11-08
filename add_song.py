@@ -7,33 +7,28 @@ import subprocess
 import spotipy
 import spotipy.util as util
 
-my_file = os.path.isfile('.cache-drummerweed')
+user_info_file = os.path.isfile('userinfo.py')
+if user_info_file is True:
+    import userinfo
+else:
+    print('userinfo file is not present, please run pre_setup_oauth.sh')
 
-if my_file is True:
+user_cache_file = os.path.isfile('.cache-drummerweed')
+
+if user_cache_file is True:
     scope = 'playlist-modify-private'
+    username = userinfo.USER
+    playlist_id = userinfo.PLAYLIST
+    CLIENT_ID = userinfo.CLIENT_ID
+    CLIENT_SECRET = userinfo.CLIENT_SECRET
+    PASSED_TRACK = sys.argv[1]
 
-    if len(sys.argv) > 2:
-        
-        username = 'drummerweed'
-        CLIENT_ID = sys.argv[1] 
-        CLIENT_SECRET = sys.argv[2] 
-        PASSED_TRACK = sys.argv[3] 
-    else:
-        print("Usage: %s CLIEND_ID, CLIENT_SECRET, PASSED_TRACK" % (sys.argv[0],))
-        sys.exit()
-
-    playlist_id = '5xdS7gI6C5KpKm4LHVKaUZ'
     track_ids = [PASSED_TRACK]
     token = util.prompt_for_user_token(username,scope,client_id=CLIENT_ID,client_secret=CLIENT_SECRET,redirect_uri='https://localhost:4567/callback')
-
-
-    if token:
-        sp = spotipy.Spotify(auth=token)
-        sp.trace = False
-        playlists = sp.user_playlist_add_tracks(username, playlist_id, track_ids)
-        #pprint.pprint(playlists)
-        print("Song ", PASSED_TRACK, "\nhas been added to your Maestro playlist")
-    else:
-        print("Can't get token for", username)
+    sp = spotipy.Spotify(auth=token)
+    sp.trace = False
+    playlists = sp.user_playlist_add_tracks(username, playlist_id, track_ids)
+    #pprint.pprint(playlists)
+    print("Song ", PASSED_TRACK, "\nhas been added to your Maestro playlist")
 else:
     print("Token is not cached.\nPlease run the get_token.py file to cache your token.")

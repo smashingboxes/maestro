@@ -32,6 +32,11 @@ To get this to work, you first need to sign up (or into) Spotify’s
 developer site and [create an *Application*][spotify-dev]. Once you’ve
 done so, you can find its `Client ID` and `Client Secret` values and
 enter them into your shpotify config file at `${HOME}/.shpotify.cfg`.
+You will need to add your Username as well. This can be found in your
+Spotify profile information. Lastly you will need the ID of the playlist
+that you want to add songs to. This can be found when you share a playlist's
+URI. It is everything after "spotify:user:Username:playlist:" Make sure 
+to add these to the config file as well, as shown below.
 
 Be sure to quote your values and don’t add any extra spaces. When
 done, it should look like the following (but with your own values):
@@ -39,6 +44,8 @@ done, it should look like the following (but with your own values):
 ```sh
 CLIENT_ID="abc01de2fghijk345lmnop"
 CLIENT_SECRET="qr6stu789vwxyz"
+USER="joesmith"
+PLAYLIST="12345playlistID12345"
 ```
 
 ## Usage
