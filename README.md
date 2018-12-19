@@ -18,7 +18,7 @@ in a terminal:
 ```sh
 brew install shpotify
 
-git clone git@github.com:smashingboxes/maestro.git
+git clone https://github.com/smashingboxes/maestro.git
 cd maestro
 bundle install
 ```
