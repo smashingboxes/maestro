@@ -1,11 +1,5 @@
 #!/usr/bin/env bash
 
-# NOTE: This is a slightly modified version of the original shpotify script
-# https://github.com/hnarayanan/shpotify
-# The only modification is to disable colors, which was done via find/replace of cecho with echo
-# If this issue gets fixed, we should use the original
-# https://github.com/hnarayanan/shpotify/issues/96
-
 # Copyright (c) 2012--2018 Harish Narayanan <mail@harishnarayanan.org>
 #
 # Contains numerous helpful contributions from Jorge Colindres, Thomas
