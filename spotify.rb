@@ -93,7 +93,7 @@ class Spotify
       if vol_arg == vol_arg.to_i.to_s
         vol_arg.to_i.between?(0, 100)
       else
-        ["", "up", "down"].include?(vol_arg)
+        ["", "up", "down", "fadeout"].include?(vol_arg)
       end
     end
 
